@@ -1,8 +1,8 @@
 <?php
 // Database Config
 $host = 'localhost';
-$username = 'ghiegz';
-$password = 'kUm@ra06';
+$username = 'root;
+$password = '';
 $dbname = 'ecommerce_db';
 
 $conn = new mysqli($host, $username, $password, $dbname);

@@ -25,7 +25,7 @@
     </head>
     <body>
         <div class="navbar">
-            <a href="home.html">Home</a>
+            <a href="index.php">Home</a>
             <a href="#products">Products</a>
             <a href="#contact">Contact</a>
             <a href="#about">About</a>

@@ -20,17 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
             $_SESSION['role'] = $user['Role'];
             $_SESSION['loggedin'] = true;
 
-            header("Location: index.php");
-            exit();
+            if($user['Role'] == 'seller') {
+                header("Location: seller_dashboard.php");
+                exit();
+            } else {
+                header("Location: index.php");
+                exit();
+            }
         } else {
             $error_msg = "Invalid Email or Password!";
         }
 
         $stmt->close();
-        $conn->close();
     } else {
         $error_msg = "Please fill in both email and password.";
     }
+    $conn->close();
 }
 ?>
 

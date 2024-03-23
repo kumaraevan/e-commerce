@@ -82,8 +82,51 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <head>
         <meta charset="UTF-8">
         <title>Account Settings</title>
+        <style>
+            .navbar {
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            .navbar a {
+                float: left;
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 20px;
+                text-decoration: none;
+            }
+
+            .navbar-right {
+                float: right;
+            }
+
+            .navbar::after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .navbar a:hover {
+                background-color: #ddd;
+                color: black;
+            }
+        </style>
     </head>
     <body>
+        <div class="navbar">
+            <a href="index.php">Home</a>
+            <a href="#products">Products</a>
+            <a href="#search">Search</a>
+            <a href="#about">About</a>
+
+        <div class="navbar-right">
+            <a href="account.php">My Account</a>
+            <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
+            <a href="logout.php">Logout</a>
+        </div>
+        </div>
+        
         <div>
             <h2>Account Settings</h2>
             <p>Account Details</p>

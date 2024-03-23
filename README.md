@@ -1,6 +1,7 @@
 # ecommerce
 
-To ensure that this website is running, first you need to set up the database.
+To run this website, use XAMPP Server. Host the necessary files in your htdocs.
+To ensure that this website is running, you also need to set up the database and name it as ecommerce_db.
 
 Create a database and create the tables.
 

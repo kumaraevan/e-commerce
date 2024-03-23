@@ -7,6 +7,7 @@ $loggedIn = isset($_SESSION['loggedin']) && $_SESSION['loggedin'];
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>eCommerce</title>
         <style>
             .navbar {
@@ -49,6 +50,7 @@ $loggedIn = isset($_SESSION['loggedin']) && $_SESSION['loggedin'];
         <div class="navbar-right">
             <a href="account.php">My Account</a>
             <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
+            <a href="logout.php">Logout</a>
         </div>
         </div>
 

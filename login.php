@@ -2,14 +2,19 @@
 session_start();
 require 'config.php';
 
+$logout_msg = "";
 $error_msg = "";
+
+if(isset($_GET['logout']) && $_GET['logout'] == 'success') {
+    $logout_msg = "You have been logged out succesfully!";
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     if (isset($_POST['email']) && isset($_POST['password'])) {
         $email = $conn->real_escape_string($_POST['email']);
         $password = $conn->real_escape_string($_POST['password']);
 
-        $stmt = $conn->prepare("SELECT UserID, Email, Password, Role FROM Users WHERE Email = ?");
+        $stmt = $conn->prepare("SELECT UserID, Name, Email, Password, Role FROM Users WHERE Email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -19,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
             $_SESSION['user_id'] = $user['UserID'];
             $_SESSION['role'] = $user['Role'];
             $_SESSION['loggedin'] = true;
+            $_SESSION['name'] = $user['Name'];
 
             if($user['Role'] == 'seller') {
                 header("Location: seller_dashboard.php");
@@ -55,6 +61,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
 <body>
 <div class="container">
     <h2>Login</h2>
+    <?php if (!empty($logout_msg)): ?>
+        <div class="logout_msg">
+            <?php echo htmlspecialchars($logout_msg); ?>
+        </div>
+    <?php endif; ?>
+
     <?php if ($error_msg != ""): ?>
         <p><?php echo htmlspecialchars($error_msg); ?></p>
     <?php endif; ?>

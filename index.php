@@ -83,6 +83,7 @@ $conn->close();
         <div class="navbar-right">
             <?php if ($logged_in): ?>
                 <a href="account.php">My Account</a>
+                <a href="cart.php">Cart</a> <!-- Apply Dynamic Cart Count -->
                 <a href="logout.php">Logout</a>
             <?php else: ?>
                 <a href="login.php">Login</a>
@@ -97,7 +98,7 @@ $conn->close();
                 <div class="product">
                     <h3><?php echo htmlspecialchars($product['Name']); ?></h3>
                     <p><?php echo htmlspecialchars($product['Description']); ?></p>
-                    <p><?php echo htmlspecialchars($product['Price']); ?></p>
+                    <p>Rp.<?php echo htmlspecialchars($product['Price']); ?></p>
                     <?php if (!empty($product['ImageURLs'])): ?>
                         <img src="<?php echo htmlspecialchars($prodcut['ImageURLS']); ?>" alt="Product Image" style="width: 100px; height: auto;">
                     <?php endif; ?>

@@ -1,12 +1,11 @@
 <?php
 session_start();
+require_once 'config.php';
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'seller') {
     header("Location: login.php");
     exit;
 }
-
-require_once 'config.php';
 
 $message = "";
 
@@ -102,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     </head>
     <body>
         <div class="navbar">
+        <a href="seller_dashboard.php">Dashboard</a>
         <a href="seller_add_new_products.php">Add New Products</a>
         <a href="seller_manage_products.php">Manage Products</a>
         <a href="seller_orders.php">View Orders</a>
@@ -132,6 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <option value="electronics">Electronics</option>
                 <option value="clothing">Clothing</option>
                 <option value="cosmetics">Cosmetics</option>
+                <option value="food">Food</option>
                 <!-- Add More Categories -->
             </select>
 

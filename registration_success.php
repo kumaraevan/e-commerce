@@ -9,6 +9,6 @@
     </head>
     <body>
         <h1>Registration Successful. Thank You!</h1>
-        <p><a href="login.php">Go to Login Page</p>
+        <p><a href="login.php" rel="noopener noreferrer">Go to Login Page</p>
     </body>
 </html>

@@ -1,7 +1,20 @@
 <?php
 session_start();
+require_once 'config.php';
 
-$loggedIn = isset($_SESSION['loggedin']) && $_SESSION['loggedin'];
+$logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'];
+
+$products_query = "SELECT ProductID, Name, Description, Price, StockQuantity, ImageURLs FROM products ORDER BY ProductID DESC LIMIT 10";
+$result = $conn->query($products_query);
+
+$products = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+}
+$conn->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -38,22 +51,62 @@ $loggedIn = isset($_SESSION['loggedin']) && $_SESSION['loggedin'];
                 background-color: #ddd;
                 color: black;
             }
+
+            .products-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+
+            .product {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                margin: 10px;
+                padding: 20px;
+                width: calc(33.333% - 20px);
+                text-align: center;
+            }
+
+            .product img {
+                max-width: 100%;
+                height: auto;
+            }
+
         </style>
     </head>
     <body>
         <div class="navbar">
             <a href="index.php">Home</a>
             <a href="#products">Products</a>
-            <a href="#contact">Contact</a>
+            <a href="#search">Search</a>
             <a href="#about">About</a>
 
         <div class="navbar-right">
-            <a href="account.php">My Account</a>
-            <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
-            <a href="logout.php">Logout</a>
+            <?php if ($logged_in): ?>
+                <a href="account.php">My Account</a>
+                <a href="logout.php">Logout</a>
+            <?php else: ?>
+                <a href="login.php">Login</a>
+            <?php endif; ?>
         </div>
         </div>
 
         <h1>Welcome To Our eCommerce Website!</h1>
+
+        <div class="products-container">
+            <?php foreach ($products as $product): ?>
+                <div class="product">
+                    <h3><?php echo htmlspecialchars($product['Name']); ?></h3>
+                    <p><?php echo htmlspecialchars($product['Description']); ?></p>
+                    <p><?php echo htmlspecialchars($product['Price']); ?></p>
+                    <?php if (!empty($product['ImageURLs'])): ?>
+                        <img src="<?php echo htmlspecialchars($prodcut['ImageURLS']); ?>" alt="Product Image" style="width: 100px; height: auto;">
+                    <?php endif; ?>
+                    <p>Stocks: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
+                </div>
+            <?php endforeach; ?>
+            <?php if (empty($products)): ?>
+                <p>No Products Found</p>
+            <?php endif; ?>
+        </div>
     </body>
 </html>

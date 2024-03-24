@@ -1,11 +1,11 @@
 <?php
 // Database Config
 $host = 'localhost';
-$username = 'root;
+$username = 'root';
 $password = '';
-$dbname = 'ecommerce_db';
+$db_name = 'ecommerce_db';
 
-$conn = new mysqli($host, $username, $password, $dbname);
+$conn = new mysqli($host, $username, $password, $db_name);
 
 if ($conn->connect_error) {
     die("Connection Failed: " . $conn->connect_error);

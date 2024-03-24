@@ -1,12 +1,11 @@
 <?php
 session_start();
+require_once 'config.php';
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: login.php");
     exit;
 }
-
-require_once 'config.php';
 
 $name = $email = "";
 

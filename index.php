@@ -15,6 +15,8 @@ if ($result && $result->num_rows > 0) {
 }
 $conn->close();
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -100,7 +102,7 @@ $conn->close();
                     <p><?php echo htmlspecialchars($product['Description']); ?></p>
                     <p>Rp.<?php echo htmlspecialchars($product['Price']); ?></p>
                     <?php if (!empty($product['ImageURLs'])): ?>
-                        <img src="<?php echo htmlspecialchars($prodcut['ImageURLS']); ?>" alt="Product Image" style="width: 100px; height: auto;">
+                        <img src="<?php echo htmlspecialchars($product['ImageURLs']); ?>" alt="Product Image" style="width: 100px; height: auto;">
                     <?php endif; ?>
                     <p>Stocks: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
                 </div>

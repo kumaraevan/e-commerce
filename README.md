@@ -9,6 +9,7 @@ CREATE TABLE Users (
     UserID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     Email VARCHAR(255) UNIQUE NOT NULL,
+    Phone CHAR(15) NOT NULL,
     Password VARCHAR(255) NOT NULL,
     Role ENUM('superadmin', 'seller', 'buyer') NOT NULL,
     RegistrationDate DATETIME NOT NULL

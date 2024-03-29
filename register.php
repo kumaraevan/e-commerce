@@ -5,12 +5,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $name = $conn->real_escape_string($_POST['name']);
     $email = $conn->real_escape_string($_POST['email']);
     $password = $conn->real_escape_string($_POST['password']);
+    $phone = $conn->real_escape_string($_POST['phone']);
     $role = $conn->real_escape_string($_POST['role']); 
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("INSERT INTO Users (Name, Email, Password, Role, RegistrationDate) VALUES (?, ?, ?, ?, NOW())");
-    $stmt->bind_param("ssss", $name, $email, $hashed_password, $role);
+    $stmt = $conn->prepare("INSERT INTO Users (Name, Email, Phone, Password, Role, RegistrationDate) VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param("sssss", $name, $email, $phone, $hashed_password, $role);
 
     if ($stmt->execute()) {
         header("Location: registration_success.php");
@@ -42,12 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     <form action="register.php" method="post">
         <input type="text" name="name" placeholder="Full Name" required>
         <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
         <input type="password" name="password" placeholder="Password" required>
         <select name="role" required>
             <option value="buyer">Buyer</option>
             <option value="seller">Seller</option>
-            <option value="superadmin">Super Admin</option>
-        </select>
+        </select></br>
         <button type="submit" name="register">Register</button>
     </form>
 </div>

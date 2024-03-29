@@ -7,19 +7,21 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
     exit;
 }
 
-$products = array();
+$products = [];
+$seller_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT ProductID, Name, Price, Description, StockQuantity, Category, ImageURLs FROM products WHERE SellerID = ?");
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $products[] = $row;
+$sql = "SELECT p.ProductID, p.Name, p.Price, p.Description, p.StockQuantity, c.CategoryName AS Category, p.ImageURLs FROM products AS p LEFT JOIN categories AS c ON p.CategoryID = c.CategoryID WHERE SellerID = ? ORDER BY p.ProductID DESC";
+if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_param($stmt, "i", $seller_id);
+    if (mysqli_stmt_execute($stmt)) {
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
     }
+    mysqli_stmt_close($stmt);
 }
-$stmt->close();
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -82,11 +84,9 @@ $stmt->close();
     </div>
     
     <div class="dashboard-content">
-    <h1>Welcome To Your Dashboard, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
-    
-    <div class="dashboard-widget">
-        <h2>Product Listings</h2>
-        <?php if (count($products) > 0): ?>
+        <h1>Welcome To Your Dashboard, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
+        
+        <?php if (!empty($products)): ?>
             <table>
                 <tr>
                     <th>Product Name</th>
@@ -94,7 +94,6 @@ $stmt->close();
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Category</th>
-                    <!-- Add columns for other details if needed -->
                 </tr>
                 <?php foreach ($products as $product): ?>
                     <tr>
@@ -103,19 +102,18 @@ $stmt->close();
                         <td><?php echo htmlspecialchars($product['Description']); ?></td>
                         <td><?php echo htmlspecialchars($product['StockQuantity']); ?></td>
                         <td><?php echo htmlspecialchars($product['Category']); ?></td>
-                        <!-- Add cells for other details if needed -->
                     </tr>
                 <?php endforeach; ?>
             </table>
         <?php else: ?>
             <p>No products found.</p>
         <?php endif; ?>
+        
+        <div class="dashboard-widget">
+            <h2>Recent Orders</h2>
+            <!-- Implementation for displaying recent orders -->
+        </div>
+        
     </div>
-    
-    <div class="dashboard-widget">
-        <h2>Recent Orders</h2>
-    </div>
-    
-</div>
 </body>
 </html>

@@ -2,24 +2,32 @@
 session_start();
 require_once 'config.php';
 
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'seller') {
+// Redirect if not logged in or if the user is not a seller
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'seller') {
     header("Location: login.php");
     exit;
 }
 
-$products = array();
+$seller_id = $_SESSION['user_id'];
+$products = [];
 
-$stmt = $conn->prepare("SELECT ProductID, Name, Price, Description, StockQuantity, Category, ImageURLs FROM products WHERE SellerID = ?");
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result();
+// Fetch seller's products, adjust SELECT query based on your actual database schema
+$sql = "SELECT p.ProductID, p.Name, p.Price, p.Description, p.StockQuantity, c.CategoryName, p.ImageURLs 
+        FROM products AS p 
+        LEFT JOIN categories AS c ON p.CategoryID = c.CategoryID 
+        WHERE p.SellerID = ? 
+        ORDER BY p.ProductID DESC";
 
-if ($result->num_rows > 0) {
+if ($stmt = $conn->prepare($sql)) {
+    $stmt->bind_param("i", $seller_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
         $products[] = $row;
     }
+    $stmt->close();
 }
-$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -81,14 +89,15 @@ $stmt->close();
         <a href="logout.php">Logout</a>
     </div>
 
-    <h1>Manage Your Products</h1>
+    <h2>Manage Your Products</h2>
+    <a href="seller_add_new_products.php">Add New Product</a>    
     <table>
         <thead>
             <tr>
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Description</th>
-                <th>Stock</th>
+                <th>Stock Quantity</th>
                 <th>Category</th>
                 <th>Actions</th>
             </tr>
@@ -100,15 +109,14 @@ $stmt->close();
                     <td><?php echo htmlspecialchars($product['Price']); ?></td>
                     <td><?php echo htmlspecialchars($product['Description']); ?></td>
                     <td><?php echo htmlspecialchars($product['StockQuantity']); ?></td>
-                    <td><?php echo htmlspecialchars($product['Category']); ?></td>
+                    <td><?php echo htmlspecialchars($product['CategoryName']); ?></td>
                     <td>
-                        <a href="edit_product.php?product_id=<?php echo $product['ProductID']; ?>">Edit</a> | 
-                        <a href="delete_product.php?product_id=<?php echo $product['ProductID']; ?>" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                        <a href="edit_product.php?ProductID=<?php echo $product['ProductID']; ?>">Edit</a> |
+                        <a href="delete_product.php?ProductID=<?php echo $product['ProductID']; ?>" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
 </body>
 </html>

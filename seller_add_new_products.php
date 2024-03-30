@@ -108,6 +108,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 text-decoration: none;
             }
 
+            .navbar-right {
+                float: right;
+            }
+
             .navbar::after {
                 content: "";
                 display: table;
@@ -144,7 +148,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         <a href="seller_add_new_products.php">Add New Products</a>
         <a href="seller_manage_products.php">Manage Products</a>
         <a href="seller_orders.php">View Orders</a>
-        <a href="logout.php">Logout</a>
+        <div class="navbar-right">
+            <a href="logout.php">Logout</a>
+        </div>
     </div>
     
     <h2>Add New Product</h2>

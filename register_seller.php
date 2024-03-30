@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $email = $conn->real_escape_string($_POST['email']);
     $password = $conn->real_escape_string($_POST['password']);
     $phone = $conn->real_escape_string($_POST['phone']);
-    $role = 'buyer';
+    $role = 'seller';
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Seller Registration</title>
     <style>
         body { font-family: Arial, sans-serif; }
         h2 { text-align: center;}
@@ -40,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 </head>
 <body>
 <div class="container">
-    <h2>Register</h2>
-    <form action="register.php" method="post">
+    <h2 aa>Seller Registration</h2>
+    <form action="register_seller.php" method="post">
         <input type="text" name="name" placeholder="Full Name" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="text" name="phone" placeholder="Phone Number" required>

@@ -50,6 +50,10 @@ $conn->close();
                 text-decoration: none;
             }
 
+            .navbar-right {
+                float: right;
+            }
+
             .navbar::after {
                 content: "";
                 display: table;
@@ -86,7 +90,9 @@ $conn->close();
         <a href="seller_add_new_products.php">Add New Products</a>
         <a href="seller_manage_products.php">Manage Products</a>
         <a href="seller_orders.php">View Orders</a>
-        <a href="logout.php">Logout</a>
+        <div class="navbar-right">
+            <a href="logout.php">Logout</a>
+        </div>
     </div>
 
     <h2>Manage Your Products</h2>
@@ -111,8 +117,8 @@ $conn->close();
                     <td><?php echo htmlspecialchars($product['StockQuantity']); ?></td>
                     <td><?php echo htmlspecialchars($product['CategoryName']); ?></td>
                     <td>
-                        <a href="edit_product.php?ProductID=<?php echo $product['ProductID']; ?>">Edit</a> |
-                        <a href="delete_product.php?ProductID=<?php echo $product['ProductID']; ?>" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                        <a href="edit_product.php?ProductID=<?php echo $product['ProductID']; ?>" style="color: #add8e6;">Edit</a> |
+                        <a href="delete_product.php?ProductID=<?php echo $product['ProductID']; ?>" style="color: red;" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -15,8 +15,6 @@ if ($result && $result->num_rows > 0) {
 }
 $conn->close();
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +70,6 @@ $conn->close();
                 max-width: 100%;
                 height: auto;
             }
-
         </style>
     </head>
     <body>
@@ -84,9 +81,9 @@ $conn->close();
 
         <div class="navbar-right">
             <?php if ($logged_in): ?>
+                <a href="register_seller.php">Open Shop!</a>
                 <a href="account.php">My Account</a>
-                <a href="cart.php">Cart</a> <!-- Apply Dynamic Cart Count -->
-                <a href="logout.php">Logout</a>
+                <a href="cart.php">Cart (0)</a> <!-- Apply Dynamic Cart Count -->
             <?php else: ?>
                 <a href="login.php">Login</a>
             <?php endif; ?>
@@ -96,8 +93,9 @@ $conn->close();
         <h1>Welcome To Our eCommerce Website!</h1>
 
         <div class="products-container">
-            <?php foreach ($products as $product): ?>
-                <div class="product">
+        <?php foreach ($products as $product): ?>
+            <a href="product_detail.php?ProductID=<?php echo $product['ProductID']; ?>" class="product" style="text-decoration: none; color: black;">
+                <div>
                     <h3><?php echo htmlspecialchars($product['Name']); ?></h3>
                     <p><?php echo htmlspecialchars($product['Description']); ?></p>
                     <p>Rp.<?php echo htmlspecialchars($product['Price']); ?></p>
@@ -106,10 +104,11 @@ $conn->close();
                     <?php endif; ?>
                     <p>Stocks: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
                 </div>
-            <?php endforeach; ?>
-            <?php if (empty($products)): ?>
-                <p>No Products Found</p>
-            <?php endif; ?>
-        </div>
+            </a>
+        <?php endforeach; ?>
+        <?php if (empty($products)): ?>
+            <p>No Products Found</p>
+        <?php endif; ?>
+    </div>
     </body>
 </html>

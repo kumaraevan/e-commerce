@@ -7,11 +7,17 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
     exit;
 }
 
-$products = [];
 $seller_id = $_SESSION['user_id'];
+$products = [];
+$orders = [];
 
-$sql = "SELECT p.ProductID, p.Name, p.Price, p.Description, p.StockQuantity, c.CategoryName AS Category, p.ImageURLs FROM products AS p LEFT JOIN categories AS c ON p.CategoryID = c.CategoryID WHERE SellerID = ? ORDER BY p.ProductID DESC";
-if ($stmt = mysqli_prepare($conn, $sql)) {
+// Fetch seller's products
+$products_sql = "SELECT ProductID, Name, Price, Description, StockQuantity, CategoryName 
+                 FROM products 
+                 LEFT JOIN categories ON products.CategoryID = categories.CategoryID 
+                 WHERE SellerID = ? 
+                 ORDER BY ProductID DESC";
+if ($stmt = mysqli_prepare($conn, $products_sql)) {
     mysqli_stmt_bind_param($stmt, "i", $seller_id);
     if (mysqli_stmt_execute($stmt)) {
         $result = mysqli_stmt_get_result($stmt);
@@ -21,6 +27,26 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
     }
     mysqli_stmt_close($stmt);
 }
+
+// Fetch orders containing seller's products
+$orders_sql = "SELECT o.OrderID, o.TotalPrice, o.DateOrdered, GROUP_CONCAT(p.Name ORDER BY p.Name ASC SEPARATOR ', ') AS Products 
+        FROM orders AS o
+        JOIN orderdetails AS od ON o.OrderID = od.OrderID
+        JOIN products AS p ON od.ProductID = p.ProductID
+        WHERE p.SellerID = ?
+        GROUP BY o.OrderID
+        ORDER BY o.DateOrdered DESC";
+if ($stmt = mysqli_prepare($conn, $orders_sql)) {
+    mysqli_stmt_bind_param($stmt, "i", $seller_id);
+    if (mysqli_stmt_execute($stmt)) {
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+    }
+    mysqli_stmt_close($stmt);
+}
+
 mysqli_close($conn);
 ?>
 
@@ -42,6 +68,10 @@ mysqli_close($conn);
                 text-align: center;
                 padding: 14px 20px;
                 text-decoration: none;
+            }
+
+            .navbar-right {
+                float: right;
             }
 
             .navbar::after {
@@ -76,15 +106,17 @@ mysqli_close($conn);
     </head>
     <body>
     <div class="navbar">
-    <a href="seller_dashboard.php">Dashboard</a>
-    <a href="seller_add_new_products.php">Add New Products</a>
-    <a href="seller_manage_products.php">Manage Products</a>
-    <a href="seller_orders.php">View Orders</a>
-    <a href="logout.php">Logout</a>
+        <a href="seller_dashboard.php">Dashboard</a>
+        <a href="seller_add_new_products.php">Add New Products</a>
+        <a href="seller_manage_products.php">Manage Products</a>
+        <a href="seller_orders.php">View Orders</a>
+        <div class="navbar-right">
+            <a href="logout.php">Logout</a>
+        </div>
     </div>
     
     <div class="dashboard-content">
-        <h1>Welcome To Your Dashboard, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
+    <h1>Welcome To Your Dashboard, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
         
         <?php if (!empty($products)): ?>
             <table>
@@ -101,7 +133,7 @@ mysqli_close($conn);
                         <td>Rp.<?php echo htmlspecialchars($product['Price']); ?></td>
                         <td><?php echo htmlspecialchars($product['Description']); ?></td>
                         <td><?php echo htmlspecialchars($product['StockQuantity']); ?></td>
-                        <td><?php echo htmlspecialchars($product['Category']); ?></td>
+                        <td><?php echo htmlspecialchars($product['CategoryName']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -111,9 +143,27 @@ mysqli_close($conn);
         
         <div class="dashboard-widget">
             <h2>Recent Orders</h2>
-            <!-- Implementation for displaying recent orders -->
+                <?php if (!empty($orders)): ?>
+                    <table>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Products</th>
+                            <th>Total Price</th>
+                            <th>Date Ordered</th>
+                        </tr>
+                        <?php foreach ($orders as $order): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($order['OrderID']); ?></td>
+                                <td><?php echo htmlspecialchars($order['Products']); ?></td>
+                                <td>Rp.<?php echo number_format($order['TotalPrice'], 2); ?></td>
+                                <td><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                <?php else: ?>
+                    <p>No recent orders found.</p>
+                <?php endif; ?>
+            </div>
         </div>
-        
-    </div>
 </body>
 </html>

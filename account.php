@@ -7,12 +7,14 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-$name = $email = "";
+$name = $email = $phone = "";
+$user_id = $_SESSION["user_id"];
+$orders = [];
 
 if (isset($_SESSION["user_id"])){
-    $sql = "SELECT Name, Email, Phone FROM users WHERE userID = ?";
+    $account_sql = "SELECT Name, Email, Phone FROM users WHERE userID = ?";
     
-    if ($stmt = mysqli_prepare($conn, $sql)){
+    if ($stmt = mysqli_prepare($conn, $account_sql)){
         mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
         
         if (mysqli_stmt_execute($stmt)){
@@ -28,8 +30,9 @@ if (isset($_SESSION["user_id"])){
         }
         mysqli_stmt_close($stmt);
     }
-    mysqli_close($conn);
 }
+
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -76,9 +79,9 @@ if (isset($_SESSION["user_id"])){
             <a href="#about">About</a>
 
         <div class="navbar-right">
+            <a href="register_seller.php">Open Shop!</a>
             <a href="account.php">My Account</a>
             <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
-            <a href="logout.php">Logout</a>
         </div>
         </div>
         
@@ -88,7 +91,8 @@ if (isset($_SESSION["user_id"])){
             <p><b>Name:</b> <?php echo htmlspecialchars($name); ?></p>
             <p><b>Email:</b> <?php echo htmlspecialchars($email); ?></p>
             <p><b>Phone:</b> <?php echo htmlspecialchars($phone); ?></p>
-            <a href="reset_password.php">Reset Your Password</a>
+            <a href="reset_password.php">Reset Your Password</a><br><br>
+            <a href="logout.php">Logout</a>
         </div>
     </body>
 </html>

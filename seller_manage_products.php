@@ -96,10 +96,11 @@ $conn->close();
     </div>
 
     <h2>Manage Your Products</h2>
-    <a href="seller_add_new_products.php">Add New Product</a>    
+    <a href="seller_add_new_products.php" style="color: #add8e6;">Add New Product</a>   
     <table>
         <thead>
             <tr>
+                <th>No.</th>
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Description</th>
@@ -109,8 +110,10 @@ $conn->close();
             </tr>
         </thead>
         <tbody>
+            <?php $counter = 1; ?>
             <?php foreach ($products as $product): ?>
                 <tr>
+                    <td><?php echo $counter++; ?></td>
                     <td><?php echo htmlspecialchars($product['Name']); ?></td>
                     <td><?php echo htmlspecialchars($product['Price']); ?></td>
                     <td><?php echo htmlspecialchars($product['Description']); ?></td>

@@ -44,14 +44,73 @@ $conn->close();
         <meta charset="UTF-8">
         <title>Order Confirmation</title>
         <style>
-            body { font-family: Arial, sans-serif; }
-            .order-confirmation { width: 600px; margin: auto; padding-top: 50px; }
-            .order-details { background-color: #f4f4f4; padding: 20px; margin-bottom: 20px; }
-            .order-details h2, .order-details p { margin: 0; }
-            .order-details p { margin-bottom: 10px; }
+            body { 
+                font-family: Arial, sans-serif; 
+            }
+            
+            .navbar {
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            .navbar a {
+                float: left;
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 20px;
+                text-decoration: none;
+            }
+
+            .navbar-right {
+                float: right;
+            }
+
+            .navbar::after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .navbar a:hover {
+                background-color: #ddd;
+                color: black;
+            }
+
+            .order-confirmation { 
+                width: 600px; 
+                margin: auto; 
+                padding-top: 50px; 
+            }
+
+            .order-details { 
+                background-color: #f4f4f4; 
+                padding: 20px; 
+                margin-bottom: 20px; 
+            }
+
+            .order-details h2, .order-details p { 
+                margin: 0; 
+            }
+
+            .order-details p { 
+                margin-bottom: 10px; 
+            }
         </style>
     </head>
     <body>
+        <div class="navbar">
+            <a href="index.php">Home</a>
+            <a href="#products">Products</a>
+            <a href="#search">Search</a>
+            <a href="#about">About</a>
+
+        <div class="navbar-right">
+            <a href="account.php">My Account</a>
+            <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
+        </div>
+        </div>
+        
         <div class="order-confirmation">
             <div class="order-details">
                 <h2>Order Confirmation</h2>

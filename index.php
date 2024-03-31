@@ -22,7 +22,7 @@ $conn->close();
     <head>
         <meta charset="UTF-8">
         <title>eCommerce</title>
-        <style>
+        <style>            
             .navbar {
                 overflow: hidden;
                 background-color: #333;

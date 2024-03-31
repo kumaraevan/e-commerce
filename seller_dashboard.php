@@ -29,7 +29,7 @@ if ($stmt = mysqli_prepare($conn, $products_sql)) {
 }
 
 // Fetch orders containing seller's products
-$orders_sql = "SELECT o.OrderID, o.TotalPrice, o.DateOrdered, GROUP_CONCAT(p.Name ORDER BY p.Name ASC SEPARATOR ', ') AS Products 
+$orders_sql = "SELECT o.OrderID, o.TotalPrice, o.DateOrdered, o.OrderStatus, GROUP_CONCAT(p.Name ORDER BY p.Name ASC SEPARATOR ', ') AS Products 
         FROM orders AS o
         JOIN orderdetails AS od ON o.OrderID = od.OrderID
         JOIN products AS p ON od.ProductID = p.ProductID
@@ -46,8 +46,6 @@ if ($stmt = mysqli_prepare($conn, $orders_sql)) {
     }
     mysqli_stmt_close($stmt);
 }
-
-mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -121,14 +119,17 @@ mysqli_close($conn);
         <?php if (!empty($products)): ?>
             <table>
                 <tr>
+                    <th>No.</th>
                     <th>Product Name</th>
                     <th>Price</th>
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Category</th>
                 </tr>
+                <?php $counter = 1; ?>
                 <?php foreach ($products as $product): ?>
                     <tr>
+                        <td><?php echo $counter++; ?></td>
                         <td><?php echo htmlspecialchars($product['Name']); ?></td>
                         <td>Rp.<?php echo htmlspecialchars($product['Price']); ?></td>
                         <td><?php echo htmlspecialchars($product['Description']); ?></td>
@@ -146,17 +147,22 @@ mysqli_close($conn);
                 <?php if (!empty($orders)): ?>
                     <table>
                         <tr>
+                            <th>No.</th>
                             <th>Order ID</th>
                             <th>Products</th>
                             <th>Total Price</th>
                             <th>Date Ordered</th>
+                            <th>Order Status</th>
                         </tr>
+                        <?php $counter = 1; ?>
                         <?php foreach ($orders as $order): ?>
                             <tr>
+                                <td><?php echo $counter++; ?></td>
                                 <td><?php echo htmlspecialchars($order['OrderID']); ?></td>
                                 <td><?php echo htmlspecialchars($order['Products']); ?></td>
                                 <td>Rp.<?php echo number_format($order['TotalPrice'], 2); ?></td>
                                 <td><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
+                                <td><?php echo htmlspecialchars($order['OrderStatus']); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>

@@ -38,7 +38,7 @@ CREATE TABLE orders (
 OrderID INT AUTO_INCREMENT PRIMARY KEY, 
 BuyerID INT, 
 TotalPrice DECIMAL(10,2) NOT NULL, 
-OrderStatus ENUM('pending', 'completed', 'shipped', 'cancelled') NOT NULL, 
+OrderStatus ENUM('AwaitingPayment','PaymentConfirmed','OrderProcessing','InTransit','Delivered','Cancelled') NOT NULL, 
 PaymentMethod VARCHAR(255), 
 ShippingAddress TEXT, 
 DateOrdered DATETIME NOT NULL, 

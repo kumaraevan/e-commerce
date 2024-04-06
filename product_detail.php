@@ -62,6 +62,12 @@ if (isset($_GET['ProductID']) && is_numeric($_GET['ProductID'])) {
                 background-color: #ddd;
                 color: black;
             }
+
+            .product-detail img {
+                width: 100%; /* Adjusts to the width of the container */
+                height: auto; /* Maintains aspect ratio */
+                max-width: 150px;
+            }
         </style>
     </head>
     <body>

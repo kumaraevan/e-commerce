@@ -22,93 +22,57 @@ $conn->close();
     <head>
         <meta charset="UTF-8">
         <title>eCommerce</title>
-        <style>            
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .navbar a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
-
-            .navbar-right {
-                float: right;
-            }
-
-            .navbar::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .navbar a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-
-            .products-container {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-around;
-            }
-
-            .product {
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                margin: 10px;
-                padding: 20px;
-                width: calc(33.333% - 20px);
-                text-align: center;
-            }
-
-            .product img {
-                max-width: 100%;
-                height: auto;
-            }
-        </style>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body>
-        <div class="navbar">
-            <a href="index.php">Home</a>
-            <a href="#products">Products</a>
-            <a href="#search">Search</a>
-            <a href="#about">About</a>
-
-        <div class="navbar-right">
-            <?php if ($logged_in): ?>
-                <a href="register_seller.php">Open Shop!</a>
-                <a href="account.php">My Account</a>
-                <a href="cart.php">Cart (0)</a> <!-- Apply Dynamic Cart Count -->
-            <?php else: ?>
-                <a href="login.php">Login</a>
-            <?php endif; ?>
-        </div>
-        </div>
-
-        <h1>Welcome To Our eCommerce Website!</h1>
-
-        <div class="products-container">
-        <?php foreach ($products as $product): ?>
-            <a href="product_detail.php?ProductID=<?php echo $product['ProductID']; ?>" class="product" style="text-decoration: none; color: black;">
-                <div>
-                    <h3><?php echo htmlspecialchars($product['Name']); ?></h3>
-                    <p><?php echo htmlspecialchars($product['Description']); ?></p>
-                    <p>Rp.<?php echo htmlspecialchars($product['Price']); ?></p>
-                    <?php if (!empty($product['ImageURLs'])): ?>
-                        <img src="<?php echo htmlspecialchars($product['ImageURLs']); ?>" alt="Product Image" style="width: 100px; height: auto;">
+    <body class="bg-gray-100">
+        <div class="bg-gray-900 text-white p-4">
+            <div class="container mx-auto flex justify-between">
+                <div class="flex space-x-4">
+                    <a href="index.php" class="hover:text-gray-300">Home</a>
+                    <a href="#products" class="hover:text-gray-300">Products</a>
+                    <a href="#search" class="hover:text-gray-300">Search</a>
+                    <?php if ($logged_in): ?>
+                        <a href="account.php" class="hover:text-gray-300">My Account</a>
                     <?php endif; ?>
-                    <p>Stocks: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
                 </div>
-            </a>
-        <?php endforeach; ?>
-        <?php if (empty($products)): ?>
-            <p>No Products Found</p>
-        <?php endif; ?>
-    </div>
+                <div class="flex space-x-4">
+                    <?php if ($logged_in): ?>
+                        <a href="register_seller.php" class="hover:text-gray-300">Open Shop!</a>
+                        <a href="cart.php" class="hover:text-gray-300">Cart (0)</a> <!-- Apply Dynamic Cart Count -->
+                    <?php else: ?>
+                        <a href="login.php" class="hover:text-gray-300">Login</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center my-8">
+            <h1 class="text-4xl font-bold">Welcome To Our eCommerce Website!</h1>
+        </div>
+
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap -mx-4">
+                <?php foreach ($products as $product): ?>
+                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
+                        <a href="product_detail.php?ProductID=<?php echo $product['ProductID']; ?>" class="block bg-white rounded-lg shadow hover:shadow-md overflow-hidden">
+                            <div class="p-4">
+                                <h3 class="font-bold truncate"><?php echo htmlspecialchars($product['Name']); ?></h3>
+                                <p class="text-sm text-gray-600"><?php echo htmlspecialchars($product['Description']); ?></p>
+                                <p class="text-lg font-semibold">Rp.<?php echo htmlspecialchars($product['Price']); ?></p>
+                            </div>
+                            <?php if (!empty($product['ImageURLs'])): ?>
+                                <img src="<?php echo htmlspecialchars($product['ImageURLs']); ?>" alt="Product Image" class="w-full h-48 object-cover">
+                            <?php endif; ?>
+                            <div class="p-4">
+                                <p class="text-sm">Stocks: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
+                            </div>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+                <?php if (empty($products)): ?>
+                    <p class="px-4">No Products Found</p>
+                <?php endif; ?>
+            </div>
+        </div>
     </body>
 </html>

@@ -65,9 +65,21 @@ mysqli_close($conn);
         <nav class="bg-gray-900 text-white p-4">
             <div class="container mx-auto flex justify-between items-center">
                 <div class="flex space-x-4">
-                    <a href="index.php" class="hover:bg-gray-700 px-3 py-2 rounded">Home</a>
-                    <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
-                    <a href="#search" class="hover:bg-gray-700 px-3 py-2 rounded">Search</a>
+                    <!-- Logo or Home Link -->
+                    <a href="index.php" class="text-xl font-bold hover:text-gray-300">eCommerce</a>
+
+                    <!-- Left Side - Navigational Links -->
+                    <!-- Add 'bg-gray-700 px-3 py-2 rounded' for active link styles -->
+                    <a href="index.php" class="hover:text-gray-300 px-3 py-2 rounded">Home</a>
+                    <a href="#products" class="hover:text-gray-300 px-3 py-2 rounded">Products</a>
+                    <div class="relative">
+                        <form action="search.php" method="get">
+                            <input type="text" name="query" class="bg-gray-800 text-white px-4 py-2 rounded-l" placeholder="Search...">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-r">
+                                Search
+                            </button>
+                        </form>
+                    </div>
                     <a href="account.php" class="hover:bg-gray-700 px-3 py-2 rounded">My Account</a>
                 </div>
                 <div class="flex space-x-4">
@@ -76,7 +88,6 @@ mysqli_close($conn);
                 </div>
             </div>
         </nav>
-
         <div class="container mx-auto mt-8">
             <h2 class="text-xl font-bold mb-4">Account Settings</h2>
             <div class="bg-white p-6 rounded-lg shadow">

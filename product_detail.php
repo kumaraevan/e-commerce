@@ -33,73 +33,46 @@ if (isset($_GET['ProductID']) && is_numeric($_GET['ProductID'])) {
     <head>
         <meta charset="UTF-8">
         <title>eCommerce</title>
-        <style>
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .navbar a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
-
-            .navbar-right {
-                float: right;
-            }
-
-            .navbar::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .navbar a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-
-            .product-detail img {
-                width: 100%; /* Adjusts to the width of the container */
-                height: auto; /* Maintains aspect ratio */
-                max-width: 150px;
-            }
-        </style>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body>
-        <div class="navbar">
-            <a href="index.php">Home</a>
-            <a href="#products">Products</a>
-            <a href="#search">Search</a>
-            <a href="#about">About</a>
-
-        <div class="navbar-right">
-            <a href="account.php">My Account</a>
-            <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
-        </div>
-        </div>
+    <body class="bg-gray-100">
+        <nav class="bg-gray-900 text-white p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="index.php" class="hover:bg-gray-700 px-3 py-2 rounded">Home</a>
+                <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
+                <a href="#search" class="hover:bg-gray-700 px-3 py-2 rounded">Search</a>
+                <a href="#about" class="hover:bg-gray-700 px-3 py-2 rounded">About</a>
+                <div class="flex">
+                    <a href="account.php" class="hover:bg-gray-700 px-3 py-2 rounded">My Account</a>
+                    <a href="cart.php" class="hover:bg-gray-700 px-3 py-2 rounded">Cart (0)</a> <!-- Dynamic cart count -->
+                </div>
+            </div>
+        </nav>
     
-        <div class="product-detail">
-        <h1><?php echo htmlspecialchars($product['Name']); ?></h1>
-        <p><?php echo htmlspecialchars($product['Description']); ?></p>
-        <p>Price: Rp.<?php echo htmlspecialchars($product['Price']); ?></p>
-        <p>Stocks: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
-        <img src="<?php echo htmlspecialchars($product['ImageURLs']); ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
-
-        <form action="buy_product.php" method="post">
-            <input type="hidden" name="product_id" value="<?php echo isset($product['ProductID']) ? $product['ProductID'] : ''; ?>">
-            <input type="number" name="quantity" min="1" value="1">
-            <input type="submit" value="Buy Now">
-        </form><br>
-        <form action="cart.php" method="post">
-                <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
-                <input type="number" name="quantity" min="1" value="1">
-                <input type="submit" name="add_to_cart" value="Add to Cart">
-        </form>
-    </div>
-</body>
+        <div class="container mx-auto mt-6 p-4 bg-white rounded-lg shadow-md">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3">
+                    <img class="w-full h-auto max-w-xs mx-auto" src="<?php echo htmlspecialchars($product['ImageURLs']); ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
+                </div>
+                <div class="md:w-2/3 md:pl-6">
+                    <h1 class="text-xl font-bold mb-2"><?php echo htmlspecialchars($product['Name']); ?></h1>
+                    <p class="mb-4"><?php echo htmlspecialchars($product['Description']); ?></p>
+                    <p class="font-semibold mb-1">Price: Rp.<?php echo htmlspecialchars($product['Price']); ?></p>
+                    <p class="mb-4">Stocks: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
+                    <div class="flex">
+                    <form action="buy_product.php" method="post" class="mr-2">
+                        <input type="hidden" name="product_id" value="<?php echo isset($product['ProductID']) ? $product['ProductID'] : ''; ?>">
+                        <input type="number" name="quantity" min="1" value="1" class="border-gray-300 rounded-md mr-2 bg-gray-50" style="border: 1px solid #cbd5e1;">
+                        <input type="submit" value="Buy Now" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                    </form>
+                    <form action="cart.php" method="post">
+                        <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+                        <input type="number" name="quantity" min="1" value="1" class="border-gray-300 rounded-md mr-2 bg-gray-50" style="border: 1px solid #cbd5e1;">
+                        <input type="submit" name="add_to_cart" value="Add to Cart" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

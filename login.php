@@ -50,34 +50,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .container { width: 300px; margin: auto; padding-top: 50px; }
-        form { display: flex; flex-direction: column; }
-        input[type="email"], input[type="password"] { margin-bottom: 10px; }
-        button { cursor: pointer; }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-    <h2>Login</h2>
+<body class="bg-gray-100">
+<div class="container mx-auto w-full max-w-xs mt-20">
+    <h2 class="text-center text-2xl font-extrabold text-gray-900">Login</h2>
     <?php if (!empty($logout_msg)): ?>
-        <div class="logout_msg">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
             <?php echo htmlspecialchars($logout_msg); ?>
         </div>
     <?php endif; ?>
 
     <?php if ($error_msg != ""): ?>
-        <p><?php echo htmlspecialchars($error_msg); ?></p>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <?php echo htmlspecialchars($error_msg); ?>
+        </div>
     <?php endif; ?>
-    <form action="login.php" method="post">
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit" name="login">Login</button>
+    <form action="login.php" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="mb-6">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="flex items-center justify-between">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="login">Login</button>
+        </div>
     </form>
 
-    <p>No Account?</p>
-    <a href="register.php">Register Now!</a>
+    <p class="text-center text-gray-500 text-xs">
+        No Account? <a href="register.php" class="text-blue-500 hover:text-blue-800">Register Now!</a>
+    </p>
 </div>
 </body>
 </html>

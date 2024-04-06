@@ -76,131 +76,82 @@ if ($update_stmt = mysqli_prepare($conn, $update_order_query)) {
 <head>
     <meta charset="UTF-8">
     <title>Payment</title>
-    <style>
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .navbar a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
-
-            .navbar-right {
-                float: right;
-            }
-
-            .navbar::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .navbar a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            table, th, td {
-                border: 1px solid #ddd;
-            }
-
-            th, td {
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="navbar">
-        <a href="index.php">Home</a>
-        <a href="#products">Products</a>
-        <a href="#search">Search</a>
-        <a href="#about">About</a>
+<body class="bg-gray-100">
+    <nav class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.php" class="hover:bg-gray-700 px-3 py-2 rounded">Home</a>
+            <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
+            <a href="#search" class="hover:bg-gray-700 px-3 py-2 rounded">Search</a>
+            <a href="#about" class="hover:bg-gray-700 px-3 py-2 rounded">About</a>
+            <div class="flex space-x-4">
+                <a href="account.php" class="hover:bg-gray-700 px-3 py-2 rounded">My Account</a>
+                <a href="cart.php" class="hover:bg-gray-700 px-3 py-2 rounded">Cart (0)</a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="navbar-right">
-        <a href="account.php">My Account</a>
-        <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
-    </div>
-    </div>
+    <div class="container mx-auto mt-10">
+        <h2 class="text-2xl font-bold mb-5 text-center">Payment Details</h2>
 
-    <h2>Payment Details</h2>
-    
-    <section>
-        <h3>Shipping Address</h3>
-        <address>
-            <?php echo htmlspecialchars($address); ?>
-        </address>
-    </section>
-    
-    <section>
-        <h3>Selected Products</h3>
+        <section class="mb-8">
+            <h3 class="text-xl font-semibold mb-3">Shipping Address</h3>
+            <p class="bg-white p-4 rounded-lg shadow">
+                <?php echo htmlspecialchars($address); ?>
+            </p>
+        </section>
+
+        <section>
+            <h3 class="text-xl font-semibold mb-3">Selected Products</h3>
+            <?php if (!empty($products)): ?>
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Name</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- Products List -->
+                            <?php $grandTotal = 0; ?>
+                            <?php foreach ($products as $product): ?>
+                            <?php
+                                $totalPrice = $product['Quantity'] * $product['PriceAtPurchase'];
+                                $grandTotal += $totalPrice;
+                            ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo htmlspecialchars($product['Name']); ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo htmlspecialchars($product['Quantity']); ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp.<?php echo number_format($product['PriceAtPurchase'], 2); ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp.<?php echo number_format($totalPrice, 2); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <tr class="bg-gray-50">
+                                <td colspan="3" class="text-right px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">Grand Total:</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">Rp.<?php echo number_format($grandTotal, 2); ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <?php else: ?>
+                <p class="text-center text-gray-600">No products selected. <a href="cart.php" class="text-blue-600 hover:underline">Return to cart</a>.</p>
+            <?php endif; ?>
+        </section>
+
         <?php if (!empty($products)): ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $mergedProducts = [];
-                foreach ($products as $product) {
-                    $key = $product['ProductID']; // Assuming Name is unique per product, change this if you have a ProductID or similar
-                    if (!isset($mergedProducts[$key])) {
-                        $mergedProducts[$key] = $product;
-                    } else {
-                        $mergedProducts[$key]['Quantity'] += $product['Quantity'];
-                        $mergedProducts[$key]['PriceAtPurchase'] = max($mergedProducts[$key]['PriceAtPurchase'], $product['PriceAtPurchase']); // Adjust if needed
-                    }
-                }
-
-                $grandTotal = 0;
-                foreach ($mergedProducts as $product):
-                    $totalPrice = $product['Quantity'] * $product['PriceAtPurchase'];
-                    $grandTotal += $totalPrice;
-                ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($product['Name']); ?></td>
-                        <td><?php echo htmlspecialchars($product['Quantity']); ?></td>
-                        <td>Rp.<?php echo number_format($product['PriceAtPurchase'], 2); ?></td>
-                        <td>Rp.<?php echo number_format($totalPrice, 2); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Grand Total:</strong></td>
-                    <td>Rp.<?php echo number_format($grandTotal, 2); ?></td>
-                </tr>
-            </tbody>
-        </table>
-        <?php else: ?>
-            <p>No products selected. <a href="cart.php">Return to cart</a>.</p>
+        <div class="mt-6 text-center">
+            <form action="payment_success.php" method="POST">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Confirm Payment</button>
+            </form>
+        </div>
         <?php endif; ?>
-    </section><br>
-    
-    <?php if (!empty($products)): ?>
-        <form action="payment_success.php" method="POST">
-            <button type="submit">Confirm Payment</button>
-        </form>
-    <?php endif; ?>
-
+    </div>
 </body>
 </html>
 

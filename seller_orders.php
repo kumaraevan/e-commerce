@@ -7,6 +7,67 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
     exit;
 }
 
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Enable exception error mode
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $order_id_to_update = $_POST['order_id'];
+    $seller_id = $_SESSION['user_id'];
+    
+    // First, get the current order status from the database
+    $current_status = '';
+    $get_status_sql = "SELECT OrderStatus FROM orders WHERE OrderID = ?";
+    if ($status_stmt = mysqli_prepare($conn, $get_status_sql)) {
+        mysqli_stmt_bind_param($status_stmt, "i", $order_id_to_update);
+        mysqli_stmt_execute($status_stmt);
+        mysqli_stmt_bind_result($status_stmt, $current_status);
+        mysqli_stmt_fetch($status_stmt);
+        mysqli_stmt_close($status_stmt);
+    }
+
+    $new_status = '';
+    if (isset($_POST['cancel_order']) && $current_status == 'PaymentConfirmed') {
+        $new_status = 'Cancelled';
+    } elseif (isset($_POST['process_order']) && $current_status == 'PaymentConfirmed') {
+        $new_status = 'OrderProcessing';
+    } elseif (isset($_POST['ship_order'])) {
+        $new_status = 'InTransit';
+    } else {
+        $_SESSION['message'] = 'Order cannot be modified. Only orders with status "PaymentConfirmed" can be cancelled or processed.';
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    }
+
+    if ($new_status !== '') {
+        $update_order_sql = "UPDATE orders AS o
+                                JOIN orderdetails AS od ON o.OrderID = od.OrderID
+                                JOIN products AS p ON od.ProductID = p.ProductID
+                                SET o.OrderStatus = ?
+                                WHERE o.OrderID = ? AND p.SellerID = ?";
+        
+        mysqli_begin_transaction($conn);
+        
+        try {
+            if ($stmt = mysqli_prepare($conn, $update_order_sql)) {
+                mysqli_stmt_bind_param($stmt, "sii", $new_status, $order_id_to_update, $seller_id);
+                
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_commit($conn);
+                    $_SESSION['message'] = "Order updated to '$new_status' successfully.";
+                } else {
+                    mysqli_rollback($conn);
+                    $_SESSION['message'] = "Failed to update order to '$new_status'.";
+                }
+                mysqli_stmt_close($stmt);
+            }
+        } catch (mysqli_sql_exception $exception) {
+            mysqli_rollback($conn);
+            $_SESSION['message'] = "An error occurred: " . $exception->getMessage();
+        }
+        
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    }
+}
+
 $seller_id = $_SESSION['user_id'];
 $orders = [];
 
@@ -33,99 +94,86 @@ mysqli_close($conn);
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>View Order</title>
-        <style>
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .navbar a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
-
-            .navbar-right {
-                float: right;
-            }
-
-            .navbar::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .navbar a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            table, th, td {
-                border: 1px solid #ddd;
-            }
-
-            th, td {
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="navbar">
-            <a href="seller_dashboard.php">Dashboard</a>
-            <a href="seller_add_new_products.php">Add New Products</a>
-            <a href="seller_manage_products.php">Manage Products</a>
-            <a href="seller_orders.php">View Orders</a>
-            <div class="navbar-right">
-                <a href="logout.php">Logout</a>
+<head>
+    <meta charset="UTF-8">
+    <title>View & Process Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="seller_dashboard.php" class="hover:bg-gray-700 px-3 py-2 rounded">Dashboard</a>
+            <a href="seller_add_new_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Add New Products</a>
+            <a href="seller_manage_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Manage Products</a>
+            <a href="seller_orders.php" class="hover:bg-gray-700 px-3 py-2 rounded">View Orders</a>
+            <div class="flex space-x-4">
+                <a href="logout.php" class="hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
             </div>
         </div>
-        <div>
-            <h2>View & Manage Orders</h2>
-                <?php if (!empty($orders)): ?>
-                    <table>
-                        <tr>
-                            <th>No.</th>
-                            <th>Order ID</th>
-                            <th>Products</th>
-                            <th>Total Price</th>
-                            <th>Date Ordered</th>
-                            <th>Order Status</th>
-                            <th>Manage</th>
-                        </tr>
-                    <?php $counter = 1; ?>
-                    <?php foreach ($orders as $order): ?>
-                        <tr>
-                            <td><?php echo $counter++; ?></td>
-                            <td><?php echo htmlspecialchars($order['OrderID']); ?></td>
-                            <td><?php echo htmlspecialchars($order['Products']); ?></td>
-                            <td>Rp.<?php echo number_format($order['TotalPrice'], 2); ?></td>
-                            <td><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
-                            <td><?php echo htmlspecialchars($order['OrderStatus']); ?></td>
-                            <td>
-                                <a href="#aaa">Cancel Order</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </table>
-            <?php else: ?>
-                <p>No recent orders found.</p>
-            <?php endif; ?>
+    </nav>
+    <?php if (!empty($_SESSION['message'])): ?>
+        <div class="mt-5">
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+                <p class="font-bold">Notice</p>
+                <p><?php echo htmlspecialchars($_SESSION['message']); ?></p>
+            </div>
         </div>
-    </body>
+    <?php unset($_SESSION['message']); endif; ?>
+    <div class="container mx-auto mt-10">
+        <h2 class="text-2xl font-bold mb-5">View & Process Orders</h2>
+        <?php if (!empty($orders)): ?>
+            <div class="overflow-x-auto">
+                <table class="min-w-full leading-normal">
+                    <thead>
+                        <tr>
+                            <th class="px-5 py-3 bg-gray-600 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">No.</th>
+                            <th class="px-5 py-3 bg-gray-600 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">Order ID</th>
+                            <th class="px-5 py-3 bg-gray-600 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">Products</th>
+                            <th class="px-5 py-3 bg-gray-600 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">Total Price</th>
+                            <th class="px-5 py-3 bg-gray-600 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">Date Ordered</th>
+                            <th class="px-5 py-3 bg-gray-600 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">Order Status</th>
+                            <th class="px-5 py-3 bg-gray-600 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $counter = 1; ?>
+                        <?php foreach ($orders as $order): ?>
+                            <tr class="bg-white border-b border-gray-200">
+                                <td class="px-5 py-5 text-sm bg-white"><?php echo $counter++; ?></td>
+                                <td class="px-5 py-5 text-sm bg-white"><?php echo htmlspecialchars($order['OrderID']); ?></td>
+                                <td class="px-5 py-5 text-sm bg-white"><?php echo htmlspecialchars($order['Products']); ?></td>
+                                <td class="px-5 py-5 text-sm bg-white">Rp.<?php echo number_format($order['TotalPrice'], 2); ?></td>
+                                <td class="px-5 py-5 text-sm bg-white"><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
+                                <td class="px-5 py-5 text-sm bg-white"><?php echo htmlspecialchars($order['OrderStatus']); ?></td>
+                                <td class="px-5 py-5 text-sm bg-white">
+                                    <?php if ($order['OrderStatus'] == 'PaymentConfirmed'): ?>
+                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="inline">
+                                            <input type="hidden" name="order_id" value="<?php echo $order['OrderID']; ?>">
+                                            <input type="submit" name="cancel_order" value="Cancel Order" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded m-1">
+                                        </form>
+                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="inline">
+                                            <input type="hidden" name="order_id" value="<?php echo $order['OrderID']; ?>">
+                                            <input type="submit" name="process_order" value="Process Now" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded m-1">
+                                        </form>
+                                    <?php elseif ($order['OrderStatus'] == 'OrderProcessing'): ?>
+                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="inline">
+                                            <input type="hidden" name="order_id" value="<?php echo $order['OrderID']; ?>">
+                                            <input type="submit" name="cancel_order" value="Cancel Order" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded m-1">
+                                        </form>
+                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="inline">
+                                            <input type="hidden" name="order_id" value="<?php echo $order['OrderID']; ?>">
+                                            <input type="submit" name="ship_order" value="Ship Now" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded m-1">
+                                        </form>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <div class="px-5 py-5 bg-white text-sm text-gray-900">No recent orders found.</div>
+        <?php endif; ?>        
+    </div>
+</body>
 </html>

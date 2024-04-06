@@ -93,90 +93,94 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <title>Add New Product</title>
-    <style>
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .navbar a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
-
-            .navbar-right {
-                float: right;
-            }
-
-            .navbar::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .navbar a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            table, th, td {
-                border: 1px solid #ddd;
-            }
-
-            th, td {
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="navbar">
-        <a href="seller_dashboard.php">Dashboard</a>
-        <a href="seller_add_new_products.php">Add New Products</a>
-        <a href="seller_manage_products.php">Manage Products</a>
-        <a href="seller_orders.php">View Orders</a>
-        <div class="navbar-right">
-            <a href="logout.php">Logout</a>
+<body class="bg-gray-100">
+    <nav class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="seller_dashboard.php" class="hover:bg-gray-700 px-3 py-2 rounded">Dashboard</a>
+            <a href="seller_add_new_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Add New Products</a>
+            <a href="seller_manage_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Manage Products</a>
+            <a href="seller_orders.php" class="hover:bg-gray-700 px-3 py-2 rounded">View Orders</a>
+            <div class="flex space-x-4">
+                <a href="logout.php" class="hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
+            </div>
         </div>
-    </div>
+    </nav>
     
-    <h2>Add New Product</h2>
-    <?php echo $message ? "<p>$message</p>" : ""; ?>
-    <form action="seller_add_new_products.php" method="post" enctype="multipart/form-data">
-        <label for="name">Product Name:</label>
-        <input type="text" name="name" required><br>
-        
-        <label for="price">Price:</label>
-        <input type="text" name="price" required><br>
-        
-        <label for="description">Description:</label>
-        <textarea name="description" required></textarea><br>
-        
-        <label for="stockQuantity">Stock Quantity:</label>
-        <input type="number" name="stockQuantity" required><br>
-        
-        <label for="category">Category:</label>
-        <select name="category" required>
-            <?php echo $categoryOptions; ?>
-        </select><br>
-        
-        <label for="productImage">Product Image:</label>
-        <input type="file" name="productImage" required><br>
-        
-        <input type="submit" name="submit" value="Add Product">
-    </form>
+    <div class="container mx-auto mt-10">
+        <h2 class="text-2xl font-bold mb-5 text-center">Add New Product</h2>
+        <?php if ($message): ?>
+            <div class="mx-auto max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20">
+                <div class="flex justify-center md:justify-end -mt-16">
+                    <img class="w-20 h-20 object-cover rounded-full border-2 border-indigo-500" src="https://dummyimage.com/100x100/ededed/aaa">
+                </div>
+                <div>
+                    <h2 class="text-gray-800 text-3xl font-semibold"><?php echo $message; ?></h2>
+                </div>
+            </div>
+        <?php endif; ?>
+        <form action="seller_add_new_products.php" method="post" enctype="multipart/form-data" class="w-full max-w-lg mx-auto mt-6">
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
+                        Product Name
+                    </label>
+                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="name" required>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="price">
+                        Price
+                    </label>
+                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" name="price" required>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="description">
+                        Description
+                    </label>
+                    <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="description" required></textarea>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="stockQuantity">
+                        Stock Quantity
+                    </label>
+                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" name="stockQuantity" required>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="category">
+                        Category
+                    </label>
+                    <div class="relative">
+                        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="category" required>
+                            <?php echo $categoryOptions; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="productImage">
+                        Product Image
+                    </label>
+                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="file" name="productImage" required>
+                </div>
+            </div>
+            <div class="md:flex md:items-center">
+                <div class="md:w-1/3">
+                    <button class="shadow bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit" name="submit">
+                        Add Product
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

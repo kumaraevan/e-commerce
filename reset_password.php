@@ -50,74 +50,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Reset Password</title>
-        <style>
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .navbar a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
-
-            .navbar-right {
-                float: right;
-            }
-
-            .navbar::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .navbar a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="navbar">
-            <a href="index.php">Home</a>
-            <a href="#products">Products</a>
-            <a href="#search">Search</a>
-            <a href="#about">About</a>
-
-        <div class="navbar-right">
-            <a href="account.php">My Account</a>
-            <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
-            <a href="logout.php">Logout</a>
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.php" class="hover:bg-gray-700 px-3 py-2 rounded">Home</a>
+            <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
+            <a href="#search" class="hover:bg-gray-700 px-3 py-2 rounded">Search</a>
+            <a href="#about" class="hover:bg-gray-700 px-3 py-2 rounded">About</a>
+            <div class="flex">
+                <a href="account.php" class="hover:bg-gray-700 px-3 py-2 rounded">My Account</a>
+                <a href="cart.php" class="hover:bg-gray-700 px-3 py-2 rounded">Cart (0)</a>
+                <a href="logout.php" class="hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
+            </div>
         </div>
-        </div>
+    </nav>
 
-        <div>
-            <p><b>Reset your password below</b></p>
+    <div class="container mx-auto w-full max-w-xs mt-20">
+        <div class="bg-white p-8 rounded-lg shadow-md">
+            <p class="text-xl font-semibold mb-4">Reset your password below</p>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                <div>
-                    <label>New Password</label>
-                    <input type="password" name="new_password" value="<?php echo $new_password; ?>">
-                    <span><?php echo $new_password_err; ?></span>
+                <div class="mb-4">
+                    <label for="new_password" class="block text-sm font-medium text-gray-700">New Password</label>
+                    <input type="password" id="new_password" name="new_password" value="<?php echo $new_password; ?>" class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" required>
+                    <span class="text-sm text-red-500"><?php echo $new_password_err; ?></span>
                 </div>
-
-                <div>
-                    <label>Confirm Password</label>
-                    <input type="password" name="confirm_password">
-                    <span><?php echo $confirm_password_err; ?></span>
+                <div class="mb-4">
+                    <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" required>
+                    <span class="text-sm text-red-500"><?php echo $confirm_password_err; ?></span>
                 </div>
-                
-                <div>
-                    <input type="submit" value="Confrim">
-                    <a href="index.php">Cancel</a>
+                <div class="flex items-center justify-between">
+                    <input type="submit" value="Confirm" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                    <a href="index.php" class="text-blue-500 hover:text-blue-800">Cancel</a>
                 </div>
             </form>
         </div>
-    </body>
+    </div>
+</body>
 </html>

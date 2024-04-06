@@ -90,7 +90,7 @@ mysqli_close($conn);
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <div class="mb-4">
                                 <label for="address" class="block text-sm font-medium text-gray-700">Address:</label>
-                                <input type="text" id="address" name="address" class="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                                <input type="text" id="address" name="address" class="mt-1 p-2 w-full border border-gray-400 rounded-md shadow-sm bg-gray-50" required>
                             </div>
                             <input type="submit" value="Update Address" class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         </form>

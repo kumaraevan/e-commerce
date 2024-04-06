@@ -109,131 +109,92 @@ mysqli_close($conn);
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Cart</title>
-        <style>
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .navbar a {
-                float: left;
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
-
-            .navbar-right {
-                float: right;
-            }
-
-            .navbar::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            .navbar a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            table, th, td {
-                border: 1px solid #ddd;
-            }
-
-            th, td {
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="navbar">
-            <a href="index.php">Home</a>
-            <a href="#products">Products</a>
-            <a href="#search">Search</a>
-            <a href="#about">About</a>
-
-        <div class="navbar-right">
-            <a href="account.php">My Account</a>
-            <a href="cart.php">Cart (0)</a> <!-- Update '0' with dynamic cart count -->
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.php" class="hover:bg-gray-700 px-3 py-2 rounded">Home</a>
+            <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
+            <a href="#search" class="hover:bg-gray-700 px-3 py-2 rounded">Search</a>
+            <a href="#about" class="hover:bg-gray-700 px-3 py-2 rounded">About</a>
+            <div class="flex space-x-4">
+                <a href="account.php" class="hover:bg-gray-700 px-3 py-2 rounded">My Account</a>
+                <a href="cart.php" class="hover:bg-gray-700 px-3 py-2 rounded">Cart (0)</a>
+            </div>
         </div>
-        </div>
-        
-        <div class="container mx-auto mt-6 p-4 border border-gray-200 rounded-lg">
-            <h2 class="text-lg font-semibold mb-4">Current Shipping Address</h2>
-            <p><?php echo nl2br(htmlspecialchars($user_data['Address'] ?? 'Not available')); ?></p>
-            <form method="post">
-                <input type="submit" name="edit_address" value="Edit Address" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-            </form>
+    </nav>
+
+    <div class="container mx-auto mt-6 p-4">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <!-- Address Update Form -->
+            <?php if(isset($_POST['edit_address'])): ?>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Shipping Address</h3>
+                    </div>
+                    <div class="px-4 py-5 sm:p-6">
+                        <textarea name="address" rows="4" class="mt-1 block w-full rounded-md border-gray-400 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50 bg-gray-50" ><?php echo htmlspecialchars($user_data['Address'] ?? ''); ?></textarea>
+                        <button type="submit" name="update_address" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
+                    </div>
+                </form>
+            <?php else: ?>
+                <!-- Display Current Address -->
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Current Shipping Address</h3>
+                    <p class="mt-1"><?php echo nl2br(htmlspecialchars($user_data['Address'] ?? 'Not available')); ?></p>
+                    <form method="post">
+                        <button type="submit" name="edit_address" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Edit Address</button>
+                    </form>
+                </div>
+            <?php endif; ?>
         </div>
 
-        <?php if(isset($_POST['edit_address'])): ?>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="container mx-auto mt-6 p-4 border border-gray-200 rounded-lg">
-                <h3 class="text-lg font-semibold mb-4">Edit Shipping Address</h3>
-                <textarea name="address" class="border border-gray-300 rounded-lg w-full p-2" rows="4"><?php echo htmlspecialchars($user_data['Address'] ?? ''); ?></textarea>
-                <div class="mt-4">
-                    <input type="submit" name="update_address" value="Update" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="mt-6">
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Your Order Details</h3>
+                </div>
+                <div class="p-4">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Select</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Ordered</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php foreach ($orders as $OrderID => $order): ?>
+                                <?php foreach ($order['Items'] as $item): ?>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <input type="checkbox" name="selectedItems[]" value="<?php echo htmlspecialchars($OrderID); ?>-<?php echo htmlspecialchars($item['ProductName']); ?>">
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($OrderID); ?></td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($item['ProductName']); ?></td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">Rp.<?php echo number_format($item['Price'], 2); ?></td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><?php echo htmlspecialchars($item['Quantity']); ?></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">Rp.<?php echo number_format($item['ItemTotal'], 2); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="px-4 py-3 sm:px-6">
+                    <button type="submit" name="proceed_to_payment" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Proceed to Payment</button>
                 </div>
             </div>
         </form>
-        <?php endif; ?>
-
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <h3>Your Order Details</h3>
-        <?php if (!empty($orders)): ?>
-        <table>
-            <tr>
-                <th>Select</th>
-                <th>Order ID</th>
-                <th>Product Name</th>
-                <th>Date Ordered</th>
-                <th>Unit Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-            </tr>
-            <?php foreach ($orders as $OrderID => $order): ?>
-                <?php foreach ($order['Items'] as $index => $item): ?>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="selectedItems[]" value="<?php echo htmlspecialchars($OrderID); ?>-<?php echo htmlspecialchars($item['ProductName']); ?>">
-                        </td>
-                        <?php if ($index === 0): ?>
-                            <td rowspan="<?php echo count($order['Items']); ?>"><?php echo htmlspecialchars($OrderID); ?></td>
-                            <td><?php echo htmlspecialchars($item['ProductName']); ?></td>
-                            <td rowspan="<?php echo count($order['Items']); ?>"><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
-                        <?php else: ?>
-                            <td><?php echo htmlspecialchars($item['ProductName']); ?></td>
-                        <?php endif; ?>
-                        <td>Rp.<?php echo number_format($item['Price'], 2); ?></td>
-                        <td><?php echo htmlspecialchars($item['Quantity']); ?></td>
-                        <td>Rp.<?php echo number_format($item['ItemTotal'], 2); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-        </table><br>
-        <div class="mt-4">
-            <input type="submit" name="proceed_to_payment" value="Proceed to Payment" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        </div>
-    <?php else: ?>
-        <p>You have no items in your cart.</p>
-    <?php endif; ?>
-    </form>
-
-    </body>
+    </div>
+</body>
 </html>

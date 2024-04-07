@@ -79,19 +79,7 @@ if ($update_stmt = mysqli_prepare($conn, $update_order_query)) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-gray-900 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.php" class="hover:bg-gray-700 px-3 py-2 rounded">Home</a>
-            <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
-            <a href="#search" class="hover:bg-gray-700 px-3 py-2 rounded">Search</a>
-            <a href="#about" class="hover:bg-gray-700 px-3 py-2 rounded">About</a>
-            <div class="flex space-x-4">
-                <a href="account.php" class="hover:bg-gray-700 px-3 py-2 rounded">My Account</a>
-                <a href="cart.php" class="hover:bg-gray-700 px-3 py-2 rounded">Cart (0)</a>
-            </div>
-        </div>
-    </nav>
-
+    <?php include 'navbar.php'; ?>
     <div class="container mx-auto mt-10">
         <h2 class="text-2xl font-bold mb-5 text-center">Payment Details</h2>
 
@@ -145,11 +133,11 @@ if ($update_stmt = mysqli_prepare($conn, $update_order_query)) {
         </section>
 
         <?php if (!empty($products)): ?>
-        <div class="mt-6 text-center">
-            <form action="payment_success.php" method="POST">
-                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Confirm Payment</button>
-            </form>
-        </div>
+            <div class="mt-6 text-left ml-4 lg:ml-0">
+                <form action="payment_success.php" method="POST">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Confirm Payment</button>
+                </form>
+            </div>
         <?php endif; ?>
     </div>
 </body>

@@ -46,23 +46,7 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-gray-900 text-white">
-        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-            <div class="relative flex items-center justify-between h-16">
-                <div class="flex-1 flex items-center justify-start">
-                    <a href="index.php" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Home</a>
-                    <a href="#products" class="ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Products</a>
-                    <a href="#search" class="ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Search</a>
-                    <a href="#about" class="ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">About</a>
-                </div>
-                <div class="ml-4 flex items-center md:ml-6">
-                    <a href="account.php" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">My Account</a>
-                    <a href="cart.php" class="ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Cart (0)</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
+    <?php include 'navbar.php'; ?>
     <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6 bg-gray-800 text-white">

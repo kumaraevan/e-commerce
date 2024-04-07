@@ -47,44 +47,7 @@ $conn->close();
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body class="bg-gray-100">
-        <nav class="bg-gray-900 text-white p-4">
-            <div class="container mx-auto flex justify-between items-center">
-                <div class="flex space-x-4">
-                    <!-- Logo or Home Link -->
-                    <a href="index.php" class="text-xl font-bold hover:text-gray-300">eCommerce</a>
-
-                    <!-- Left Side - Navigational Links -->
-                    <!-- Add 'bg-gray-700 px-3 py-2 rounded' for active link styles -->
-                    <a href="index.php" class="hover:text-gray-300 px-3 py-2 rounded">Home</a>
-                    <a href="#products" class="hover:text-gray-300 px-3 py-2 rounded">Products</a>
-                    <div class="relative">
-                        <form action="search.php" method="get">
-                            <input type="text" name="query" class="bg-gray-800 text-white px-4 py-2 rounded-l" placeholder="Search...">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-r">
-                                Search
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                
-                <div class="flex space-x-4">
-                    <!-- Conditional Links for Logged in Users -->
-                    <?php if ($logged_in): ?>
-                        <a href="register_seller.php" class="hover:text-gray-300 px-3 py-2 rounded">Open Shop!</a>
-                        
-                        <!-- Cart with Icon -->
-                        <a href="cart.php" class="hover:text-gray-300 px-3 py-2 rounded flex items-center">Cart (0) <!-- Dynamic Cart Count --></a>
-                        <!-- Conditional Link for Logged in Users -->
-                    <?php if ($logged_in): ?>
-                        <a href="account.php" class="hover:text-gray-300 px-3 py-2 rounded">My Account</a>
-                    <?php endif; ?>
-                    <?php else: ?>
-                        <!-- Login Link -->
-                        <a href="login.php" class="hover:text-gray-300 px-3 py-2 rounded">Login</a>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </nav>
+    <?php include 'navbar.php'; ?>
         <div class="text-center my-8">
             <h1 class="text-4xl font-bold">Welcome To Our eCommerce Website!</h1>
         </div>

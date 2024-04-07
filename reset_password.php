@@ -56,20 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-gray-900 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.php" class="hover:bg-gray-700 px-3 py-2 rounded">Home</a>
-            <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
-            <a href="#search" class="hover:bg-gray-700 px-3 py-2 rounded">Search</a>
-            <a href="#about" class="hover:bg-gray-700 px-3 py-2 rounded">About</a>
-            <div class="flex">
-                <a href="account.php" class="hover:bg-gray-700 px-3 py-2 rounded">My Account</a>
-                <a href="cart.php" class="hover:bg-gray-700 px-3 py-2 rounded">Cart (0)</a>
-                <a href="logout.php" class="hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
-            </div>
-        </div>
-    </nav>
-
+    <?php include 'navbar.php'; ?>
     <div class="container mx-auto w-full max-w-xs mt-20">
         <div class="bg-white p-8 rounded-lg shadow-md">
             <p class="text-xl font-semibold mb-4">Reset your password below</p>

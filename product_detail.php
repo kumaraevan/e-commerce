@@ -51,12 +51,7 @@ if (isset($_GET['ProductID']) && is_numeric($_GET['ProductID'])) {
                     <form action="buy_product.php" method="post" class="mr-2">
                         <input type="hidden" name="product_id" value="<?php echo isset($product['ProductID']) ? $product['ProductID'] : ''; ?>">
                         <input type="number" name="quantity" min="1" value="1" class="border-gray-300 rounded-md mr-2 bg-gray-50" style="border: 1px solid #cbd5e1;">
-                        <input type="submit" value="Buy Now" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                    </form>
-                    <form action="cart.php" method="post">
-                        <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
-                        <input type="number" name="quantity" min="1" value="1" class="border-gray-300 rounded-md mr-2 bg-gray-50" style="border: 1px solid #cbd5e1;">
-                        <input type="submit" name="add_to_cart" value="Add to Cart" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                        <input type="submit" value="Add to Cart" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
                     </form>
                     </div>
                 </div>

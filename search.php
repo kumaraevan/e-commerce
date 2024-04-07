@@ -56,7 +56,7 @@ if (isset($_GET['query'])) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <!-- Rest of your navigation and page structure here -->
+    <?php include 'navbar.php'; ?>
     <div class="container mx-auto px-4 my-8">
         <h2 class="text-xl mb-4">Search Results for: <?php echo htmlspecialchars($_GET['query']); ?></h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

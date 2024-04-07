@@ -29,24 +29,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <title>Seller Registration</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        h2 { text-align: center;}
-        .container { width: 300px; margin: auto; padding-top: 50px; }
-        form { display: flex; flex-direction: column; }
-        input[type="text"], input[type="email"], input[type="password"] { margin-bottom: 10px; }
-        button { cursor: pointer; }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-    <h2 aa>Seller Registration</h2>
-    <form action="register_seller.php" method="post">
-        <input type="text" name="name" placeholder="Full Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="phone" placeholder="Phone Number" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit" name="register">Register</button>
+<body class="bg-gray-100">
+<div class="container mx-auto w-full max-w-xs mt-20">
+    <h2 class="text-center text-2xl font-extrabold text-gray-900">Seller Registration</h2>
+    <form action="register_seller.php" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name" placeholder="Full Name" required>
+        </div>
+        <div class="mb-4">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="mb-4">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="phone" placeholder="Phone Number" required>
+        </div>
+        <div class="mb-6">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="flex items-center justify-between">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="register">Register</button>
+        </div>
     </form>
 </div>
 </body>

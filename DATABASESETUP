@@ -59,7 +59,8 @@ BuyerID INT,
 Rating INT NOT NULL, 
 Comment TEXT, 
 DatePosted DATETIME NOT NULL, 
-FOREIGN KEY (ProductID) REFERENCES products(ProductID), 
+FOREIGN KEY (ProductID) REFERENCES products(ProductID),
+FOREIGN KEY (OrderID) REFERENCES orders(OrderID),
 FOREIGN KEY (BuyerID) REFERENCES users(UserID) 
 );
 

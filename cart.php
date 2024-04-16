@@ -71,11 +71,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_address'])) {
 
 
 // Prepare a statement to fetch order details along with product information
-$order_sql = "SELECT o.OrderID, o.DateOrdered, p.Name as ProductName, p.Price, od.Quantity, (p.Price * od.Quantity) as ItemTotal 
+$order_sql = "SELECT o.OrderID, o.DateOrdered, p.Name 
+              as ProductName, p.Price, od.Quantity, (p.Price * od.Quantity)     
+              as ItemTotal 
               FROM orders o
               INNER JOIN orderdetails od ON o.OrderID = od.OrderID
               INNER JOIN products p ON od.ProductID = p.ProductID
-              WHERE o.BuyerID = ? AND o.OrderStatus <> 'PaymentConfirmed'
+              WHERE o.BuyerID = ? 
+              AND o.OrderStatus = 'AwaitingPayment'
               ORDER BY o.DateOrdered DESC";
 if ($stmt = mysqli_prepare($conn, $order_sql)) {
     // Bind variables to the prepared statement as parameters

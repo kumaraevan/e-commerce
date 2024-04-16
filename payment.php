@@ -66,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['payment_method'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

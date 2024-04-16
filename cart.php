@@ -8,14 +8,33 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
+$user_id = $_SESSION["user_id"];
+$orders = [];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_order'])) {
+    $selected_items = $_POST['selectedItems'] ?? [];
+    if (!empty($selected_items)) {
+        foreach ($selected_items as $item) {
+            $item_details = explode('-', $item);
+            $order_id = $item_details[0];
+
+            $cancel_query = "UPDATE orders SET orderstatus = 'Cancelled' WHERE OrderID = ? AND BuyerID = ?";
+            if ($cancel_stmt = mysqli_prepare($conn, $cancel_query)) {
+                mysqli_stmt_bind_param($cancel_stmt, "ii", $order_id, $user_id);
+                mysqli_stmt_execute($cancel_stmt);
+                mysqli_stmt_close($cancel_stmt);
+            }
+        }
+        header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]));
+        exit();
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['proceed_to_payment'])) {
     $_SESSION['selected_items'] = $_POST['selectedItems'] ?? [];
     header("Location: payment.php");
     exit;
 }
-
-$user_id = $_SESSION["user_id"];
-$orders = [];
 
 // Fetch user data
 $user_query = "SELECT Address FROM Users WHERE UserID = ?";
@@ -184,6 +203,7 @@ mysqli_close($conn);
                 </div>
                 <div class="px-4 py-3 sm:px-6">
                     <button type="submit" name="proceed_to_payment" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Proceed to Payment</button>
+                    <button type="submit" name="cancel_order" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out ml-4">Cancel</button>
                 </div>
             </div>
         </form>

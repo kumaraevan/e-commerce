@@ -80,6 +80,10 @@ $conn->close();
         </div>
         <div class="mt-6 text-center">
             <p>Thank you for your purchase! Your order is being processed.</p>
+            <a href="cart.php" 
+            class="text-blue-500 hover:text-blue-700 text-lg font-semibold mt-3 inline-block">
+            View Cart
+            </a>
         </div>
     </div>
 </body>

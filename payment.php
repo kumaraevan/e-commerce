@@ -22,6 +22,8 @@ if ($address_stmt = mysqli_prepare($conn, $address_query)) {
     mysqli_stmt_close($address_stmt);
 }
 
+$_SESSION['user_address'] = $address;
+
 $products = [];
 
 foreach ($selected_items as $item) {

@@ -2,11 +2,6 @@
 session_start();
 require_once 'config.php';
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] != 'buyer') {
-    header("Location: login.php");
-    exit;
-}
-
 if (isset($_GET['ProductID']) && is_numeric($_GET['ProductID'])) {
     $product_id = $_GET['ProductID'];
     

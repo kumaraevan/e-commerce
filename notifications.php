@@ -63,7 +63,29 @@ if ($stmt = mysqli_prepare($conn, $orders_query)) {
     mysqli_stmt_close($stmt);
 }
 
-mysqli_close($conn);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['finish_order'])) {
+    $order_id_to_finish = $_POST['finish_order_id'];
+
+    $update_order_to_finished_query = "
+        UPDATE Orders 
+        SET OrderStatus = 'Finished' 
+        WHERE OrderID = ?
+    ";
+
+    if ($stmt = mysqli_prepare($conn, $update_order_to_finished_query)) {
+        mysqli_stmt_bind_param($stmt, "i", $order_id_to_finish);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $_SESSION["message"] = "Order #{$order_id_to_finish} has been marked as finished.";
+            header("Location: notifications.php");
+            exit;
+        } else {
+            $_SESSION["error"] = "Unable to mark the order as finished.";
+        }
+        mysqli_stmt_close($stmt);
+    }
+    mysqli_close($conn);
+}
 ?>
 
 <!DOCTYPE html>

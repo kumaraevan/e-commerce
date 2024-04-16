@@ -13,7 +13,7 @@ $page = basename($_SERVER['PHP_SELF']);
 
             <!-- Left Side - Navigational Links -->
             <a href="index.php" class="<?= ($page == 'index.php') ? 'text-gray-300' : 'hover:bg-gray-700'; ?> px-3 py-2 rounded">Home</a>
-            <a href="#products" class="hover:bg-gray-700 px-3 py-2 rounded">Products</a>
+            <a href="category.php" class="hover:bg-gray-700 px-3 py-2 rounded">Category</a>
             <div class="relative">
                 <form action="search.php" method="get">
                     <input type="text" name="query" class="bg-gray-800 text-white px-4 py-2 rounded-l" placeholder="Search...">

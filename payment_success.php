@@ -9,6 +9,31 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
+//
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['payment_method'])) {
+    $payment_method = $_POST['payment_method'];
+    $update_order_query = "UPDATE Orders 
+    SET OrderStatus = 'PaymentConfirmed', ShippingAddress = ?, PaymentMethod = ?
+    WHERE BuyerID = ? 
+    AND OrderStatus = 'AwaitingPayment'";
+
+    $address = 'test';
+
+    if ($update_stmt = mysqli_prepare($conn, $update_order_query)) {
+        mysqli_stmt_bind_param($update_stmt, "ssi", $address, $payment_method, $user_id);
+        if (mysqli_stmt_execute($update_stmt)) {
+            header("Location: payment_success.php");
+            exit();
+        } else {
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+        mysqli_stmt_close($update_stmt);
+    }
+}
+
+//
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION["user_id"];
     $selected_items = $_SESSION['selected_items'] ?? [];

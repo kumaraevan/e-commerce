@@ -28,6 +28,7 @@ if ($user_stmt = mysqli_prepare($conn, $user_query)) {
     mysqli_stmt_close($user_stmt);
 }
 
+
 // Handle address update
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_address'])) {
     $new_address = trim($_POST['address']);

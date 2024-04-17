@@ -2,8 +2,8 @@
 session_start();
 require_once 'config.php';
 
-// Redirect if not logged in or if the user is not a seller
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'seller') {
+// Redirect if not logged in or if the user is not a seller or admin
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || ($_SESSION["role"] !== 'seller' && $_SESSION["role"] !== 'admin')) {
     header("Location: login.php");
     exit;
 }

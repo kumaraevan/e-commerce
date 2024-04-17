@@ -2,7 +2,7 @@
 session_start();
 require_once 'config.php';
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] != 'buyer') {
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] != 'buyer' && $_SESSION["role"] !== 'admin') {
     header("Location: login.php");
     exit;
 }

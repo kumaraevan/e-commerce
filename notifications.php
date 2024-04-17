@@ -122,30 +122,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['finish_order'])) {
                                 <p><?php echo htmlspecialchars($order['ProductName']); ?></p>
                                 <p class="text-sm text-gray-600"><?php echo htmlspecialchars($order['DateOrdered']); ?></p>
                             </div>
-                            <?php if ($order['OrderStatus'] == 'PaymentConfirmation'): ?>
-                                <div class="text-sm text-gray-600 my-auto">
-                                    Awaiting seller confirmation.
-                                </div>
-                            <?php else: ?>
-                                <div class="button-container">
-                                    <?php if ($order['OrderStatus'] == 'OrderProcessing' || $order['OrderStatus'] == 'InTransit'): ?>
-                                        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                            <input type="hidden" name="arrived_order_id" value="<?php echo $order['OrderID']; ?>">
-                                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                Mark as Arrived
-                                            </button>
-                                        </form>
-                                    <?php endif; ?>
-                                    <?php if ($order['OrderStatus'] == 'Arrived'): ?>
-                                        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                            <input type="hidden" name="review_order_id" value="<?php echo $order['OrderID']; ?>">
-                                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                                Write Review
-                                            </button>
-                                        </form>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
+                            <div class="button-container">
+                                <?php if ($order['OrderStatus'] == 'InTransit'): ?>
+                                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                        <input type="hidden" name="arrived_order_id" value="<?php echo $order['OrderID']; ?>">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Mark as Arrived
+                                        </button>
+                                    </form>
+                                <?php elseif ($order['OrderStatus'] == 'Arrived'): ?>
+                                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                        <input type="hidden" name="review_order_id" value="<?php echo $order['OrderID']; ?>">
+                                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                            Write Review
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>

@@ -29,6 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
             if($user['Role'] == 'seller') {
                 header("Location: seller_dashboard.php");
                 exit();
+            } elseif ($user['Role'] == 'admin') {
+                header("Location: admin.php");
+                exit();
             } else {
                 header("Location: index.php");
                 exit();

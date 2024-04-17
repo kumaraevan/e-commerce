@@ -47,7 +47,7 @@ $conn->close();
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body class="bg-gray-100">
-    <?php include 'navbar.php'; ?>
+    <?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
         <div class="text-center my-8">
             <h1 class="text-4xl font-bold">Welcome To Our eCommerce Website!</h1>
         </div>

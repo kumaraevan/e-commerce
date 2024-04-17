@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $categoryID = intval($_POST['category']);
 
     // Handle file upload
-    $target_dir = "uploads/";
+    $target_dir = "img/uploads/";
     $target_file = $target_dir . basename($_FILES["productImage"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));

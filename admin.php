@@ -2,6 +2,11 @@
 session_start();
 require_once 'config.php';
 
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'admin') {
+    header("Location: login.php");
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['role'])) {
         $role = $_POST['role'];
@@ -43,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="card">
         <form method="post">
-            <img src="uploads/seller_icon.png" alt="Seller">
+            <img src="img/seller_icon.png" alt="Seller">
             <div class="card-title">Seller</div>
             <p>Access your seller dashboard.</p>
             <input type="submit" name="role" value="seller">
@@ -51,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <div class="card">
         <form method="post">
-            <img src="uploads/buyer_icon.png" alt="Buyer">
+            <img src="img/buyer_icon.png" alt="Buyer">
             <div class="card-title">Buyer</div>
             <p>View and purchase products.</p>
             <input type="submit" name="role" value="buyer">
@@ -59,11 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <div class="card">
         <form method="post">
-            <img src="uploads/admin_icon.png" alt="Admin">
+            <img src="img/admin_icon.png" alt="Admin">
             <div class="card-title">Admin</div>
             <p>Manage all administrative functions.</p>
             <input type="submit" name="role" value="admin">
         </form>
     </div>
+    <a href="logout.php" class="text-blue-500 hover:underline">Logout</a>
 </body>
 </html>

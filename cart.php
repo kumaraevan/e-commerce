@@ -11,31 +11,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 $user_id = $_SESSION["user_id"];
 $orders = [];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_order'])) {
-    $selected_items = $_POST['selectedItems'] ?? [];
-    if (!empty($selected_items)) {
-        foreach ($selected_items as $item) {
-            $item_details = explode('-', $item);
-            $order_id = $item_details[0];
-
-            $cancel_query = "UPDATE orders SET orderstatus = 'Cancelled' WHERE OrderID = ? AND BuyerID = ?";
-            if ($cancel_stmt = mysqli_prepare($conn, $cancel_query)) {
-                mysqli_stmt_bind_param($cancel_stmt, "ii", $order_id, $user_id);
-                mysqli_stmt_execute($cancel_stmt);
-                mysqli_stmt_close($cancel_stmt);
-            }
-        }
-        header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]));
-        exit();
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['proceed_to_payment'])) {
-    $_SESSION['selected_items'] = $_POST['selectedItems'] ?? [];
-    header("Location: payment.php");
-    exit;
-}
-
 // Fetch user data
 $user_query = "SELECT Address FROM Users WHERE UserID = ?";
 if ($user_stmt = mysqli_prepare($conn, $user_query)) {
@@ -47,70 +22,61 @@ if ($user_stmt = mysqli_prepare($conn, $user_query)) {
     mysqli_stmt_close($user_stmt);
 }
 
-
-// Handle address update
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_address'])) {
-    $new_address = trim($_POST['address']);
-    $update_query = "UPDATE Users SET Address = ? WHERE UserID = ?";
-    if ($update_stmt = mysqli_prepare($conn, $update_query)) {
-        mysqli_stmt_bind_param($update_stmt, "si", $new_address, $user_id);
-        if (mysqli_stmt_execute($update_stmt)) {
-            // Update successful
-            $user_data['Address'] = $new_address; // Update address in the current session
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['proceed_to_payment'])) {
+        // Check if address is empty
+        if (empty($user_data['Address'])) {
+            echo "<p>Please update your address before proceeding to payment.</p>";
         } else {
-            // Update failed
-            echo "Error updating record: " . $conn->error;
+            $_SESSION['selected_items'] = $_POST['selectedItems'] ?? [];
+            header("Location: payment.php");
+            exit;
         }
-        mysqli_stmt_close($update_stmt);
+    } elseif (isset($_POST['cancel_order'])) {
+        $selected_items = $_POST['selectedItems'] ?? [];
+        if (!empty($selected_items)) {
+            foreach ($selected_items as $item) {
+                $item_details = explode('-', $item);
+                $order_id = $item_details[0];
+
+                $cancel_query = "UPDATE orders SET orderstatus = 'Cancelled' WHERE OrderID = ? AND BuyerID = ?";
+                if ($cancel_stmt = mysqli_prepare($conn, $cancel_query)) {
+                    mysqli_stmt_bind_param($cancel_stmt, "ii", $order_id, $user_id);
+                    mysqli_stmt_execute($cancel_stmt);
+                    mysqli_stmt_close($cancel_stmt);
+                }
+            }
+            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]));
+            exit();
+        }
+    } elseif (isset($_POST['update_address'])) {
+        $new_address = trim($_POST['address']);
+        $update_query = "UPDATE Users SET Address = ? WHERE UserID = ?";
+        if ($update_stmt = mysqli_prepare($conn, $update_query)) {
+            mysqli_stmt_bind_param($update_stmt, "si", $new_address, $user_id);
+            if (mysqli_stmt_execute($update_stmt)) {
+                $user_data['Address'] = $new_address; // Update address in the current session data
+            } else {
+                echo "Error updating record: " . $conn->error;
+            }
+            mysqli_stmt_close($update_stmt);
+        }
     }
 }
 
-// Check if the form is submitted to update the address
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_address'])) {
-    $new_address = trim($_POST['address']);
-
-    // Prepare an update statement
-    $update_sql = "UPDATE Users SET Address = ? WHERE UserID = ?";
-    if ($update_stmt = mysqli_prepare($conn, $update_sql)) {
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($update_stmt, "si", $new_address, $user_id);
-        
-        // Attempt to execute the prepared statement
-        if (mysqli_stmt_execute($update_stmt)) {
-            // Reload the user data to reflect the address change
-            $user['Address'] = $new_address;
-        } else {
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-        
-        // Close statement
-        mysqli_stmt_close($update_stmt);
-    }
-}
-
-
-// Prepare a statement to fetch order details along with product information
-$order_sql = "SELECT o.OrderID, o.DateOrdered, p.Name 
-              as ProductName, p.Price, od.Quantity, (p.Price * od.Quantity)     
-              as ItemTotal 
+// Fetch orders awaiting payment
+$order_sql = "SELECT o.OrderID, o.DateOrdered, p.Name AS ProductName, p.Price, od.Quantity, (p.Price * od.Quantity) AS ItemTotal 
               FROM orders o
-              INNER JOIN orderdetails od ON o.OrderID = od.OrderID
-              INNER JOIN products p ON od.ProductID = p.ProductID
-              WHERE o.BuyerID = ? 
-              AND o.OrderStatus = 'AwaitingPayment'
+              JOIN orderdetails od ON o.OrderID = od.OrderID
+              JOIN products p ON od.ProductID = p.ProductID
+              WHERE o.BuyerID = ? AND o.OrderStatus = 'AwaitingPayment'
               ORDER BY o.DateOrdered DESC";
 if ($stmt = mysqli_prepare($conn, $order_sql)) {
-    // Bind variables to the prepared statement as parameters
     mysqli_stmt_bind_param($stmt, "i", $user_id);
-
-    // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
-        // Store the result so we can check if the record exists
         $result = mysqli_stmt_get_result($stmt);
-
-        // Fetch all the orders and product details and store them in the $orders array
         while ($row = $result->fetch_assoc()) {
-            // Group orders by OrderID
             $orders[$row['OrderID']]['DateOrdered'] = $row['DateOrdered'];
             $orders[$row['OrderID']]['Items'][] = [
                 'ProductName' => $row['ProductName'],
@@ -122,8 +88,6 @@ if ($stmt = mysqli_prepare($conn, $order_sql)) {
     } else {
         echo "Oops! Something went wrong. Please try again later.";
     }
-
-    // Close the statement
     mysqli_stmt_close($stmt);
 }
 
@@ -142,13 +106,13 @@ mysqli_close($conn);
     <div class="container mx-auto mt-6 p-4">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <!-- Address Update Form -->
-            <?php if(isset($_POST['edit_address'])): ?>
+            <?php if (isset($_POST['edit_address'])): ?>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Shipping Address</h3>
                     </div>
                     <div class="px-4 py-5 sm:p-6">
-                        <textarea name="address" rows="4" class="mt-1 block w-full rounded-md border-gray-400 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50 bg-gray-50" ><?php echo htmlspecialchars($user_data['Address'] ?? ''); ?></textarea>
+                        <textarea name="address" rows="4" class="mt-1 block w-full rounded-md border-gray-400 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50 bg-gray-50" required><?php echo htmlspecialchars($user_data['Address'] ?? ''); ?></textarea>
                         <button type="submit" name="update_address" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
                     </div>
                 </form>

@@ -10,6 +10,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 $user_id = $_SESSION["user_id"];
 $orders = [];
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['arrived_order_id'])) {
     $arrived_order_id = $_POST['arrived_order_id'];
 

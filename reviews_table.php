@@ -17,8 +17,9 @@ $queryTypes = '';
 
 if (!empty($search)) {
     $whereClause = "WHERE ReviewID LIKE CONCAT('%', ?, '%') 
+                    OR ProductID LIKE CONCAT('%', ?, '%') 
                     OR BuyerID LIKE CONCAT('%', ?, '%')";
-    $params = array_fill(0, 2, $search);
+    $params = array_fill(0, 3, $search);
     $queryTypes = str_repeat('s', count($params)); // 's' denotes string type for all params
 }
 
@@ -36,7 +37,7 @@ if ($stmt) {
 }
 
 if (!$result) {
-    $feedback_message = "Error retrieving orders: " . htmlspecialchars($conn->error);
+    $feedback_message = "Error retrieving reviews: " . htmlspecialchars($conn->error);
 }
 ?>
 
@@ -49,51 +50,53 @@ if (!$result) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 font-sans">
     <?php include 'sidebar.php'; ?>
 
-    <div class="container mx-auto px-4">
-        <h2 class="text-2xl font-semibold my-4">Manage Reviews</h2>
+    <div class="container mx-auto px-4 pt-5">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6">Manage Reviews</h2>
 
         <!-- Search bar -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET" class="mb-4">
             <div class="flex items-center">
-                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search review" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded focus:outline-none focus:shadow-outline">Search</button>
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search reviews" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
             </div>
         </form>
 
         <!-- Display feedback message -->
         <?php echo $feedback_message; ?>
 
-        <table class="table-auto w-full mb-4">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="px-4 py-2">Review ID</th>
-                    <th class="px-4 py-2">Product ID</th>
-                    <th class="px-4 py-2">Buyer ID</th>
-                    <th class="px-4 py-2">Rating</th>
-                    <th class="px-4 py-2">Comment</th>
-                    <th class="px-4 py-2">Date Posted</th>
-                    <th class="px-4 py-2">Edit</th>
-                    <th class="px-4 py-2">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()) { ?>
-                <tr class="bg-white">
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["ReviewID"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["ProductID"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["BuyerID"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["Rating"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["Comment"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["DatePosted"]); ?></td>
-                    <td class="border px-4 py-2"><a href="edit_product.php?id=<?php echo $row["ReviewID"]; ?>" class="text-blue-500 hover:text-blue-800">Edit</a></td>
-                    <td class="border px-4 py-2"><a href="delete_product.php?id=<?php echo $row["ReviewID"]; ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="text-red-500 hover:text-red-800">Delete</a></td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+        <div class="bg-white shadow overflow-hidden rounded-lg">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Review ID</th>
+                        <th class="py-3 px-6 text-left">Product ID</th>
+                        <th class="py-3 px-6 text-left">Buyer ID</th>
+                        <th class="py-3 px-6 text-left">Rating</th>
+                        <th class="py-3 px-6 text-left">Comment</th>
+                        <th class="py-3 px-6 text-left">Date Posted</th>
+                        <th class="py-3 px-6 text-left">Edit</th>
+                        <th class="py-3 px-6 text-left">Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    <?php while ($row = $result->fetch_assoc()) { ?>
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["ReviewID"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["ProductID"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["BuyerID"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["Rating"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["Comment"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["DatePosted"]); ?></td>
+                        <td class="py-3 px-6 text-left"><a href="edit_review.php?id=<?php echo $row["ReviewID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
+                        <td class="py-3 px-6 text-left"><a href="delete_review.php?id=<?php echo $row["ReviewID"]; ?>" onclick="return confirm('Are you sure you want to delete this review?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <?php $conn->close(); ?>

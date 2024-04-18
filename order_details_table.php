@@ -23,7 +23,7 @@ if (!empty($search)) {
     $queryTypes = str_repeat('s', count($params)); // 's' denotes string type for all params
 }
 
-$sql = "SELECT * FROM orderdetails $whereClause ORDER BY OrderDetailID ASC";
+$sql = "SELECT OrderDetailID, OrderID, ProductID, Quantity, PriceAtPurchase FROM orderdetails $whereClause ORDER BY OrderDetailID ASC";
 $stmt = $conn->prepare($sql);
 
 if ($stmt) {
@@ -37,7 +37,7 @@ if ($stmt) {
 }
 
 if (!$result) {
-    $feedback_message = "Error retrieving orders: " . htmlspecialchars($conn->error);
+    $feedback_message = "Error retrieving order details: " . htmlspecialchars($conn->error);
 }
 ?>
 
@@ -50,45 +50,47 @@ if (!$result) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 font-sans">
     <?php include 'sidebar.php'; ?>
 
-    <div class="container mx-auto px-4">
-        <h2 class="text-2xl font-semibold my-4">View Order Details</h2>
+    <div class="container mx-auto px-4 pt-5">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6">View Order Details</h2>
 
         <!-- Search bar -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET" class="mb-4">
             <div class="flex items-center">
-                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search orders details" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded focus:outline-none focus:shadow-outline">Search</button>
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search order details" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
             </div>
         </form>
 
         <!-- Display feedback message -->
         <?php echo $feedback_message; ?>
 
-        <table class="table-auto w-full mb-4">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="px-4 py-2">Order Detail ID</th>
-                    <th class="px-4 py-2">Order ID</th>
-                    <th class="px-4 py-2">Product ID</th>
-                    <th class="px-4 py-2">Quantity</th>
-                    <th class="px-4 py-2">Purchase Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()) { ?>
-                <tr class="bg-white">
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["OrderDetailID"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["OrderID"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["ProductID"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["Quantity"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["PriceAtPurchase"]); ?></td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+        <div class="bg-white shadow overflow-hidden rounded-lg">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Order Detail ID</th>
+                        <th class="py-3 px-6 text-left">Order ID</th>
+                        <th class="py-3 px-6 text-left">Product ID</th>
+                        <th class="py-3 px-6 text-left">Quantity</th>
+                        <th class="py-3 px-6 text-left">Purchase Price</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    <?php while ($row = $result->fetch_assoc()) { ?>
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["OrderDetailID"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["OrderID"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["ProductID"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["Quantity"]); ?></td>
+                        <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["PriceAtPurchase"]); ?></td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <?php $conn->close(); ?>

@@ -34,12 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Query to retrieve existing categories
-$sql = "SELECT * FROM categories";
+$sql = "SELECT * FROM categories ORDER BY CategoryID";
 $result = $conn->query($sql);
 
 // Check for query errors
 if (!$result) {
-    die("Error retrieving categories: " . htmlspecialchars(mysqli_error($conn)));
+    $feedback_message = "Error retrieving products: " . htmlspecialchars($conn->error);
 }
 ?>
 
@@ -52,43 +52,43 @@ if (!$result) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 font-sans">
     <?php include 'sidebar.php'; ?>
 
-    <div class="container mx-auto px-4">
-        <h2 class="text-2xl font-semibold my-4">Manage Categories</h2>
+    <div class="container mx-auto px-4 pt-5">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6">Manage Categories</h2>
 
         <!-- Display feedback message -->
         <?php echo $feedback_message; ?>
 
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="mb-4">
-            <div class="flex items-center">
-                <input type="text" name="categoryName" id="categoryName" placeholder="Add Category" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2">Add</button>
-            </div>
-            <p class="text-red-500 text-xs italic"><?php echo $category_name_error; ?></p>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="mb-4 flex">
+            <input type="text" name="categoryName" id="categoryName" placeholder="Add Category" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add</button>
+            <p class="text-red-500 text-xs italic ml-4 self-center"><?php echo $category_name_error; ?></p>
         </form>
 
-        <table class="table-auto w-full mb-4">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="px-4 py-2">Category ID</th>
-                    <th class="px-4 py-2">Category Name</th>
-                    <th class="px-4 py-2">Edit</th>
-                    <th class="px-4 py-2">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()) { ?>
-                <tr class="bg-white">
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["CategoryID"]); ?></td>
-                    <td class="border px-4 py-2"><?php echo htmlspecialchars($row["CategoryName"]); ?></td>
-                    <td class="border px-4 py-2"><a href="edit_category.php?id=<?php echo $row["CategoryID"]; ?>" class="text-blue-500 hover:text-blue-800">Edit</a></td>
-                    <td class="border px-4 py-2"><a href="delete_category.php?id=<?php echo $row["CategoryID"]; ?>" onclick="return confirm('Are you sure you want to delete this category?')" class="text-red-500 hover:text-red-800">Delete</a></td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+        <div class="bg-white shadow overflow-hidden rounded-lg">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Category ID</th>
+                        <th class="py-3 px-6 text-left">Category Name</th>
+                        <th class="py-3 px-6 text-left">Edit</th>
+                        <th class="py-3 px-6 text-left">Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    <?php while ($row = $result->fetch_assoc()) { ?>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left whitespace-nowrap"><?= htmlspecialchars($row["CategoryID"]) ?></td>
+                            <td class="py-3 px-6 text-left"><?= htmlspecialchars($row["CategoryName"]) ?></td>
+                            <td class="py-3 px-6 text-left"><a href="edit_category.php?id=<?= $row["CategoryID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
+                            <td class="py-3 px-6 text-left"><a href="delete_category.php?id=<?= $row["CategoryID"]; ?>" onclick="return confirm('Are you sure you want to delete this category?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <?php $conn->close(); ?>

@@ -74,8 +74,8 @@ if (!$result) {
                         <td class="py-3 px-6 text-left"><?= htmlspecialchars($row["Name"]) ?></td>
                         <td class="py-3 px-6 text-left"><?= htmlspecialchars($row["Description"]) ?></td>
                         <td class="py-3 px-6 text-left"><?= htmlspecialchars($row["Price"]) ?></td>
-                        <td class="py-3 px-6 text-left"><a href="edit_product.php?id=<?= $row["ProductID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
-                        <td class="py-3 px-6 text-left"><a href="delete_product.php?id=<?= $row["ProductID"]; ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
+                        <td class="py-3 px-6 text-left"><a href="admin_edit_product.php?id=<?= $row["ProductID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
+                        <td class="py-3 px-6 text-left"><a href="admin_delete_product.php?id=<?= $row["ProductID"]; ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                     <?php } ?>
                 </tbody>

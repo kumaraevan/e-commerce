@@ -62,8 +62,10 @@ if (!$result) {
         <?php echo $feedback_message; ?>
 
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="mb-4 flex">
-            <input type="text" name="categoryName" id="categoryName" placeholder="Add Category" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add</button>
+            <input type="text" name="categoryName" id="categoryName" placeholder="Add category" required class="px-4 py-2 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 w-full">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md">
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
             <p class="text-red-500 text-xs italic ml-4 self-center"><?php echo $category_name_error; ?></p>
         </form>
 
@@ -82,8 +84,8 @@ if (!$result) {
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6 text-left whitespace-nowrap"><?= htmlspecialchars($row["CategoryID"]) ?></td>
                             <td class="py-3 px-6 text-left"><?= htmlspecialchars($row["CategoryName"]) ?></td>
-                            <td class="py-3 px-6 text-left"><a href="edit_category.php?id=<?= $row["CategoryID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
-                            <td class="py-3 px-6 text-left"><a href="delete_category.php?id=<?= $row["CategoryID"]; ?>" onclick="return confirm('Are you sure you want to delete this category?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
+                            <td class="py-3 px-6 text-left"><a href="admin_edit_category.php?id=<?= $row["CategoryID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
+                            <td class="py-3 px-6 text-left"><a href="admin_delete_category.php?id=<?= $row["CategoryID"]; ?>" onclick="return confirm('Are you sure you want to delete this category?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                     <?php } ?>
                 </tbody>

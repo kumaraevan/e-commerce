@@ -73,8 +73,6 @@ if (!$result) {
                         <th class="py-3 px-6 text-left">Payment ID</th>
                         <th class="py-3 px-6 text-left">Order ID</th>
                         <th class="py-3 px-6 text-left">Date</th>
-                        <th class="py-3 px-6 text-left">Edit</th>
-                        <th class="py-3 px-6 text-left">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
@@ -83,8 +81,6 @@ if (!$result) {
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["PaymentID"]); ?></td>
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["OrderID"]); ?></td>
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["Date"]); ?></td>
-                        <td class="py-3 px-6 text-left"><a href="edit_payment.php?id=<?php echo $row["PaymentID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
-                        <td class="py-3 px-6 text-left"><a href="delete_payment.php?id=<?php echo $row["PaymentID"]; ?>" onclick="return confirm('Are you sure you want to delete this payment?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                     <?php } ?>
                 </tbody>

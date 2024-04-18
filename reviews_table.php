@@ -90,8 +90,8 @@ if (!$result) {
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["Rating"]); ?></td>
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["Comment"]); ?></td>
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["DatePosted"]); ?></td>
-                        <td class="py-3 px-6 text-left"><a href="edit_review.php?id=<?php echo $row["ReviewID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
-                        <td class="py-3 px-6 text-left"><a href="delete_review.php?id=<?php echo $row["ReviewID"]; ?>" onclick="return confirm('Are you sure you want to delete this review?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
+                        <td class="py-3 px-6 text-left"><a href="admin_edit_review.php?id=<?php echo $row["ReviewID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
+                        <td class="py-3 px-6 text-left"><a href="admin_delete_review.php?id=<?php echo $row["ReviewID"]; ?>" onclick="return confirm('Are you sure you want to delete this review?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                     <?php } ?>
                 </tbody>

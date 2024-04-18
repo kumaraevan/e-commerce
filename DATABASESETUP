@@ -56,6 +56,7 @@ CREATE TABLE reviews (
 ReviewID INT AUTO_INCREMENT PRIMARY KEY, 
 ProductID INT, 
 BuyerID INT, 
+OrderID INT,
 Rating INT NOT NULL, 
 Comment TEXT, 
 DatePosted DATETIME NOT NULL, 

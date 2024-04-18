@@ -66,7 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Fetch orders awaiting payment
-$order_sql = "SELECT o.OrderID, o.DateOrdered, p.Name AS ProductName, p.Price, od.Quantity, (p.Price * od.Quantity) AS ItemTotal 
+$order_sql = "SELECT o.OrderID, o.DateOrdered, p.Name 
+              AS ProductName, p.Price, od.Quantity, (p.Price * od.Quantity)     
+              AS ItemTotal 
               FROM orders o
               JOIN orderdetails od ON o.OrderID = od.OrderID
               JOIN products p ON od.ProductID = p.ProductID
@@ -102,7 +104,7 @@ mysqli_close($conn);
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <?php include 'navbar.php'; ?>
+<?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
     <div class="container mx-auto mt-6 p-4">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <!-- Address Update Form -->

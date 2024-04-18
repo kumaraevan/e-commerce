@@ -9,19 +9,24 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
 }
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
-<a href="users_table.php">Users</a>
-<a href="categories_table.php">Categories</a>
-<a href="products_table.php">Products</a>  
-<a href="orders_table.php">Orders</a>  
-<a href="order_details_table.php">Order Details</a>  
-<a href="reviews_table.php">Reviews</a>  
-<a href="payments_table.php">Payment</a>  
-<a href="deliveries_table.php">Deliveries</a>  
-<a href="transaction_reports_table.php">Transaction Reports</a>  
-<a href="register_admin.php">Register Admin</a>
+<body class="bg-gray-100">
+
+<?php include 'sidebar.php'; ?>
+
+    <!-- Content -->
+    <div class="flex-1 p-10 text-2xl font-bold">
+        <h1>Welcome to the Admin Dashboard</h1>
+    </div>
+</div>
+
 </body>
 </html>

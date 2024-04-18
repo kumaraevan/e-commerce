@@ -31,7 +31,7 @@ if (isset($_GET['ProductID']) && is_numeric($_GET['ProductID'])) {
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body class="bg-gray-100">
-        <?php include 'navbar.php'; ?>
+    <?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
         <div class="container mx-auto mt-6 p-4 bg-white rounded-lg shadow-md">
             <div class="flex flex-col md:flex-row">
                 <div class="md:w-1/3">

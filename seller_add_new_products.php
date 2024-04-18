@@ -112,9 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         <h2 class="text-2xl font-bold mb-5 text-center">Add New Product</h2>
         <?php if ($message): ?>
             <div class="mx-auto max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20">
-                <div class="flex justify-center md:justify-end -mt-16">
-                    <img class="w-20 h-20 object-cover rounded-full border-2 border-indigo-500" src="https://dummyimage.com/100x100/ededed/aaa">
-                </div>
                 <div>
                     <h2 class="text-gray-800 text-3xl font-semibold"><?php echo $message; ?></h2>
                 </div>

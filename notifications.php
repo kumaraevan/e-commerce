@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['finish_order'])) {
     </style>
 </head>
 <body class="bg-gray-100">
-    <?php include 'navbar.php'; ?>
+<?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
     <div class="container mx-auto mt-8">
         <h2 class="text-xl font-bold mb-4">Order Notifications</h2>
         <div class="bg-white p-6 rounded-lg shadow overflow-hidden">

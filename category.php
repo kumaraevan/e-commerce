@@ -35,8 +35,7 @@ $products_stmt->close();
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <?php include 'navbar.php'; ?>
-
+<?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
     <div class="container mx-auto mt-6 p-4 bg-white rounded-lg shadow-md">
     <form action="category.php" method="get" class="mb-4">
         <select name="category" onchange="this.form.submit()" class="border-2 border-blue-500 text-blue-500 text-sm rounded-md bg-white hover:border-blue-600 focus:outline-none focus:border-blue-600 p-2">

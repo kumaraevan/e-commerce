@@ -83,7 +83,10 @@ $conn->close();
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo htmlspecialchars($product['CategoryName']); ?></td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <a href="edit_product.php?ProductID=<?php echo $product['ProductID']; ?>" class="text-blue-400 hover:text-blue-600">Edit</a> |
-                                            <a href="delete_product.php?ProductID=<?php echo $product['ProductID']; ?>" class="text-red-400 hover:text-red-600" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                                            <form action="delete_product.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                                <input type="hidden" name="product_id" value="<?php echo $product['ProductID']; ?>">
+                                                <button type="submit" class="text-red-400 hover:text-red-600">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

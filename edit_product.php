@@ -3,7 +3,7 @@ session_start();
 require_once 'config.php';
 
 // Ensure the user is logged in and is a seller
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] != 'seller') {
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || ($_SESSION["role"] !== 'seller' && $_SESSION["role"] !== 'admin')) {
     header("Location: login.php");
     exit;
 }

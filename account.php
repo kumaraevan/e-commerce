@@ -62,7 +62,7 @@ mysqli_close($conn);
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     </head>
     <body class="bg-gray-100">
-    <?php include 'navbar.php'; ?>
+    <?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
         <div class="container mx-auto mt-8">
             <h2 class="text-xl font-bold mb-4">Account Settings</h2>
             <div class="bg-white p-6 rounded-lg shadow">

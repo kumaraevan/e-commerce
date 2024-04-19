@@ -78,8 +78,7 @@ if (!$result) {
                         <th class="py-3 px-6 text-left">Order ID</th>
                         <th class="py-3 px-6 text-left">Product ID</th>
                         <th class="py-3 px-6 text-left">Payment ID</th>
-                        <th class="py-3 px-6 text-left">Edit</th>
-                        <th class="py-3 px-6 text-left">Delete</th>
+                        <th class="py-3 px-6 text-center">Detail Report</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
@@ -90,9 +89,7 @@ if (!$result) {
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["OrderID"]); ?></td>
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["ProductID"]); ?></td>
                         <td class="py-3 px-6 text-left"><?php echo htmlspecialchars($row["PaymentID"]); ?></td>
-                        <td class="py-3 px-6 text-left"><a href="edit_transaction_report.php?id=<?php echo $row["ReportID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-edit"></i></a></td>
-                        <td class="py-3 px-6 text-left"><a href="delete_transaction_report.php?id=<?php echo $row["ReportID"]; ?>" onclick="return confirm('Are you sure you want to delete this report?')" class="text-red-500 hover:text-red-800"><i class="fas fa-trash-alt"></i></a></td>
-                    </tr>
+                        <td class="py-3 px-6 text-center"><a href="transaction_detail_report.php?id=<?php echo $row["ReportID"]; ?>" class="text-blue-500 hover:text-blue-800"><i class="fas fa-file-alt"></i></a></td>
                     <?php } ?>
                 </tbody>
             </table>

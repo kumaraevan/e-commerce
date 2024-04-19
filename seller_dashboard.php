@@ -54,92 +54,86 @@ if ($stmt = mysqli_prepare($conn, $orders_sql)) {
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-gray-900 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="seller_dashboard.php" class="hover:bg-gray-700 px-3 py-2 rounded">Dashboard</a>
-            <a href="seller_add_new_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Add New Products</a>
-            <a href="seller_manage_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Manage Products</a>
-            <a href="seller_orders.php" class="hover:bg-gray-700 px-3 py-2 rounded">View Orders</a>
-            <div class="flex space-x-4">
-                <a href="logout.php" class="hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
+<body class="bg-gray-100 flex">
+
+    <?php include 'sidebar_seller.php'; ?>
+
+    <div class="pl-64"> <!-- Adjusted padding-left to accommodate the sidebar -->
+        <div class="container mx-auto mt-10 pl-56">
+            <h1 class="text-2xl font-bold mb-5 text-center">Welcome To Your Dashboard, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
+            <div class="mb-10">
+                <h2 class="text-lg leading-6 font-medium text-gray-900 mb-2">Your Products</h2>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="rounded-t-lg bg-gray-600">
+                        <?php if (!empty($products)): ?>
+                            <table class="min-w-full leading-normal">
+                                <thead class="text-white rounded-t-lg">
+                                    <tr>
+                                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">No.</th>
+                                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Product Name</th>
+                                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Price</th>
+                                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Description</th>
+                                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Quantity</th>
+                                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    <?php $counter = 1; ?>
+                                    <?php foreach ($products as $product): ?>
+                                        <tr>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo $counter++; ?></td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['Name']); ?></td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">Rp<?php echo htmlspecialchars($product['Price']); ?></td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['Description']); ?></td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['StockQuantity']); ?></td>
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['CategoryName']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <p>No products found.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
-    
-    <div class="container mx-auto mt-10">
-        <h1 class="text-2xl font-bold mb-5 text-center">Welcome To Your Dashboard, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
-        <div class="mb-10">
-            <h2 class="text-lg leading-6 font-medium text-gray-900 mb-2">Your Products</h2>
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="rounded-t-lg bg-gray-600">
-                    <?php if (!empty($products)): ?>
-                        <table class="min-w-full leading-normal">
+
+            <div>    
+                <h2 class="text-lg leading-6 font-medium text-gray-900 mb-2">Recent Orders</h2>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="rounded-t-lg bg-gray-600">
+                        <?php if (!empty($orders)): ?>
+                            <table class="min-w-full">
                             <thead class="text-white rounded-t-lg">
                                 <tr>
                                     <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">No.</th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Product Name</th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Price</th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Description</th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Quantity</th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Category</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Order ID</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Products</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Total Price</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Date Ordered</th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Order Status</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white">
                                 <?php $counter = 1; ?>
-                                <?php foreach ($products as $product): ?>
+                                <?php foreach ($orders as $order): ?>
                                     <tr>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo $counter++; ?></td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['Name']); ?></td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">Rp<?php echo htmlspecialchars($product['Price']); ?></td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['Description']); ?></td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['StockQuantity']); ?></td>
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($product['CategoryName']); ?></td>
+                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($order['OrderID']); ?></td>
+                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($order['Products']); ?></td>
+                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">Rp<?php echo number_format($order['TotalPrice'], 2); ?></td>
+                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
+                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($order['OrderStatus']); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
                     <?php else: ?>
-                        <p>No products found.</p>
+                        <p>No recent orders found.</p>
                     <?php endif; ?>
                 </div>
-            </div>
-        </div>
-
-        <div>    
-            <h2 class="text-lg leading-6 font-medium text-gray-900 mb-2">Recent Orders</h2>
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="rounded-t-lg bg-gray-600">
-                    <?php if (!empty($orders)): ?>
-                        <table class="min-w-full">
-                        <thead class="text-white rounded-t-lg">
-                            <tr>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">No.</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Order ID</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Products</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Total Price</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Date Ordered</th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">Order Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white">
-                            <?php $counter = 1; ?>
-                            <?php foreach ($orders as $order): ?>
-                                <tr>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo $counter++; ?></td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($order['OrderID']); ?></td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($order['Products']); ?></td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">Rp<?php echo number_format($order['TotalPrice'], 2); ?></td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars(date("F j, Y, g:i a", strtotime($order['DateOrdered']))); ?></td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"><?php echo htmlspecialchars($order['OrderStatus']); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p>No recent orders found.</p>
-                <?php endif; ?>
             </div>
         </div>
     </div>

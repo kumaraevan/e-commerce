@@ -94,90 +94,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <title>Add New Product</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .pl-80 {
+            padding-left: 46rem;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-gray-900 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="seller_dashboard.php" class="hover:bg-gray-700 px-3 py-2 rounded">Dashboard</a>
-            <a href="seller_add_new_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Add New Products</a>
-            <a href="seller_manage_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Manage Products</a>
-            <a href="seller_orders.php" class="hover:bg-gray-700 px-3 py-2 rounded">View Orders</a>
-            <div class="flex space-x-4">
-                <a href="logout.php" class="hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
-            </div>
-        </div>
-    </nav>
-    
-    <div class="container mx-auto mt-10">
-        <h2 class="text-2xl font-bold mb-5 text-center">Add New Product</h2>
-        <?php if ($message): ?>
-            <div class="mx-auto max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20">
-                <div>
-                    <h2 class="text-gray-800 text-3xl font-semibold"><?php echo $message; ?></h2>
+<body class="bg-gray-100 flex">
+    <?php include 'sidebar_seller.php'; ?>
+
+    <div class="pl-80"> <!-- Increased left padding to move content further right -->
+        <div class="container mx-auto mt-10 px-4"> <!-- Adjusted for right shifting -->
+            <h2 class="text-2xl font-bold mb-5 text-center">Add New Product</h2>
+            <?php if ($message): ?>
+                <div class="mx-auto max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20">
+                    <div>
+                        <h2 class="text-gray-800 text-3xl font-semibold"><?php echo $message; ?></h2>
+                    </div>
                 </div>
-            </div>
-        <?php endif; ?>
-        <form action="seller_add_new_products.php" method="post" enctype="multipart/form-data" class="w-full max-w-lg mx-auto mt-6">
-            <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
-                        Product Name
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="name" required>
+            <?php endif; ?>
+
+            <form action="seller_add_new_products.php" method="post" enctype="multipart/form-data" class="w-full max-w-lg mx-auto mt-6">
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
+                            Product Name
+                        </label>
+                        <input type="text" name="name" required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="price">
-                        Price
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" name="price" required>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="price">
+                            Price
+                        </label>
+                        <input type="text" name="price" required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="description">
-                        Description
-                    </label>
-                    <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="description" required></textarea>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="description">
+                            Description
+                        </label>
+                        <textarea name="description" required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="stockQuantity">
-                        Stock Quantity
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" name="stockQuantity" required>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="stockQuantity">
+                            Stock Quantity
+                        </label>
+                        <input type="number" name="stockQuantity" required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="category">
-                        Category
-                    </label>
-                    <div class="relative">
-                        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="category" required>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="category">
+                            Category
+                        </label>
+                        <select name="category" required class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <?php echo $categoryOptions; ?>
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="productImage">
-                        Product Image
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="file" name="productImage" required>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="productImage">
+                            Product Image
+                        </label>
+                        <input type="file" name="productImage" required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    </div>
                 </div>
-            </div>
-            <div class="md:flex md:items-center">
-                <div class="md:w-1/3">
-                    <button class="shadow bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit" name="submit">
-                        Add Product
-                    </button>
+                <div class="md:flex md:items-center">
+                    <div class="md:w-full"> <!-- Made button wider -->
+                        <button type="submit" name="submit" class="shadow bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"> <!-- Adjusted button styling for wider appearance -->
+                            Add Product
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
 </html>

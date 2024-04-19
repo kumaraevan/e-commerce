@@ -46,7 +46,7 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <?php include 'navbar.php'; ?>
+<?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
     <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6 bg-gray-800 text-white">

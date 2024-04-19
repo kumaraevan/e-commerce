@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['payment_method'])) {
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-  <?php include 'navbar.php'; ?>
+<?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
   <div class="container mx-auto mt-10">
     <h2 class="text-2xl font-bold mb-5 text-center">Payment Details</h2>
 

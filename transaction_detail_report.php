@@ -71,75 +71,59 @@ $conn->close();
         <?php endif; ?>
 
         <?php if (!empty($transaction_details)): ?>
-            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <h2 class="text-2xl mb-6 text-gray-700">Transaction Report Detail for Report ID: <?php echo htmlspecialchars($transaction_details['ReportID']); ?></h2>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        User Name
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['UserName']); ?></p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Address
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Address']); ?></p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Phone Number
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Phone']); ?></p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Email
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Email']); ?></p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Order ID
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['OrderID']); ?></p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Product Name
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['ProductName']); ?></p>
-                </div>
-                <div class="flex mb-4">
-                    <div class="w-1/2 mr-2">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">
-                            Quantity
-                        </label>
-                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Quantity']); ?></p>
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 grid grid-cols-2 gap-4">
+                <div> <!-- Left Column -->
+                    <h2 class="text-2xl mb-6 text-gray-700">Transaction Report Detail for Report ID: <?php echo htmlspecialchars($transaction_details['ReportID']); ?></h2>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">User Name</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['UserName']); ?></p>
                     </div>
-                    <div class="w-1/2 ml-2">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">
-                            Price at Purchase
-                        </label>
-                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['PriceAtPurchase']); ?></p>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Address</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Address']); ?></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Phone']); ?></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Email']); ?></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Order ID</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['OrderID']); ?></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Product Name</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['ProductName']); ?></p>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Total Price
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['TotalPrice']); ?></p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Payment Method
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['PaymentMethod']); ?></p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Order Status
-                    </label>
-                    <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['OrderStatus']); ?></p>
+
+                <div> <!-- Right Column -->
+                    <h2 class="text-2xl mb-6 text-gray-700">&nbsp;</h2> <!-- Placeholder for alignment -->
+                    <div class="flex mb-4">
+                        <div class="w-1/2 mr-2">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
+                            <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['Quantity']); ?></p>
+                        </div>
+                        <div class="w-1/2 ml-2">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Price at Purchase</label>
+                            <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['PriceAtPurchase']); ?></p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Total Price</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['TotalPrice']); ?></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Payment Method</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['PaymentMethod']); ?></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Order Status</label>
+                        <p class="text-gray-600"><?php echo htmlspecialchars($transaction_details['OrderStatus']); ?></p>
+                    </div>
                 </div>
             </div>
         <?php endif; ?>

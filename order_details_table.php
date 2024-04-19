@@ -59,8 +59,10 @@ if (!$result) {
         <!-- Search bar -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET" class="mb-4">
             <div class="flex items-center">
-                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search order details" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search order details" class="px-4 py-2 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 w-full">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </form>
 

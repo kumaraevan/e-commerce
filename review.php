@@ -16,12 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['review_submit'])) {
     $date_posted = date("Y-m-d H:i:s"); // Current date and time
 
     $insert_review_query = "
-        INSERT INTO Reviews (ProductID, BuyerID, Rating, Comment, DatePosted) 
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO Reviews (ProductID, BuyerID, OrderID, Rating, Comment, DatePosted) 
+        VALUES (?, ?, ?, ?, ?, ?)
     ";
 
     if ($stmt = mysqli_prepare($conn, $insert_review_query)) {
-        mysqli_stmt_bind_param($stmt, "iiiss", $product_id, $buyer_id, $rating, $comment, $date_posted);
+        mysqli_stmt_bind_param($stmt, "iiiiss", $product_id, $buyer_id, $order_id, $rating, $comment, $date_posted);
         
         if (mysqli_stmt_execute($stmt)) {
             $_SESSION["message"] = "Your review has been posted.";
@@ -74,7 +74,7 @@ if (null === $product_id) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <?php include 'navbar.php'; ?>
+<?php include 'C:\xampp\htdocs\eCommerce\dsgn\navbar.php'; ?>
     <div class="container mx-auto mt-8">
         <h2 class="text-xl font-bold mb-4">Write a Review</h2>
         <div class="bg-white p-6 rounded-lg shadow">
@@ -93,7 +93,7 @@ if (null === $product_id) {
                 </div>
                 <div class="mb-4">
                     <label for="comment" class="block text-gray-700 text-sm font-bold mb-2">Comment:</label>
-                    <textarea id="comment" name="comment" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Write your review here..."></textarea>
+                    <textarea id="comment" name="comment" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Write your review here"></textarea>
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" name="review_submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

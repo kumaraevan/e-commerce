@@ -12,17 +12,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("INSERT INTO Users (Name, Email, Phone, Password, Role, RegistrationDate) VALUES (?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("sssss", $name, $email, $phone, $hashed_password, $role);
+    // Check if email already exists
+    $email_check = $conn->prepare("SELECT Email FROM Users WHERE Email = ?");
+    $email_check->bind_param("s", $email);
+    $email_check->execute();
+    $email_check->store_result();
 
-    if ($stmt->execute()) {
-        header("Location: registration_success.php");
-        exit();
+    if ($email_check->num_rows > 0) {
+        $error_msg = "An account with this email already exists.";
     } else {
-        $error_msg = "Error: " . $stmt->error;
-    }
+        $stmt = $conn->prepare("INSERT INTO Users (Name, Email, Phone, Password, Role, RegistrationDate) VALUES (?, ?, ?, ?, ?, NOW())");
+        $stmt->bind_param("sssss", $name, $email, $phone, $hashed_password, $role);
 
-    $stmt->close();
+        if ($stmt->execute()) {
+            header("Location: registration_success.php");
+            exit();
+        } else {
+            $error_msg = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+    
+    $email_check->close();
     $conn->close();
 }
 ?>

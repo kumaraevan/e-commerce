@@ -40,6 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         // check if e-mail address is well-formed
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailErr = "Invalid email format";
+        } else {
+            // Check if email already exists
+            $email_query = $conn->prepare("SELECT email FROM users WHERE email = ?");
+            $email_query->bind_param("s", $email);
+            $email_query->execute();
+            $email_query->store_result();
+            if ($email_query->num_rows > 0) {
+                $emailErr = "An account with this email already exists.";
+            }
         }
     }
 
@@ -61,9 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         $password = test_input($_POST["password"]);
     }
 
-
     // If no errors, proceed to insert
-    if (empty($nameErr) && empty($emailErr) && empty($phoneErr) && empty($passwordErr) ) {
+    if (empty($nameErr) && empty($emailErr) && empty($phoneErr) && empty($passwordErr)) {
         $password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
         $role = 'admin'; // Set the role
 
@@ -74,24 +82,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
             $stmt->bind_param("sssss", $name, $email, $phone, $password, $role);
 
             if ($stmt->execute()) {
-                // Set success message
                 $success_msg = "Admin registered successfully!";
             } else {
-                // Set error message
                 $success_msg = "Error: " . $stmt->error;
             }
 
             $stmt->close();
         }
-    } else {
-        // Display error messages
-        echo $nameErr;
-        echo $emailErr;
-        echo $phoneErr;
-        echo $passwordErr;
     }
+    $conn->close();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
                 <p class="text-red-500 text-xs italic"><?php echo $phoneErr; ?></p>
             </div>
             <div class="mb-6">
-                <input type="password" name="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+                <input type of="password" name="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                 <p class="text-red-500 text-xs italic"><?php echo $passwordErr; ?></p>
             </div>
             <div class="flex items-center justify-between">

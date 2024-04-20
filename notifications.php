@@ -85,7 +85,7 @@ $orders_query = "
     FROM Orders o
     JOIN OrderDetails od ON o.OrderID = od.OrderID
     JOIN Products p ON od.ProductID = p.ProductID
-    WHERE o.BuyerID = ? AND o.OrderStatus IN ('OrderProcessing', 'InTransit', 'Arrived')
+    WHERE o.BuyerID = ? AND o.OrderStatus IN ('PaymentConfirmed', 'OrderProcessing', 'InTransit', 'Arrived')
     GROUP BY o.OrderID
     ORDER BY o.DateOrdered DESC
 ";

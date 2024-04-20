@@ -11,19 +11,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("INSERT INTO Users (Name, Email, Phone, Password, Role, RegistrationDate) VALUES (?, ?, ?, ?, ?, NOW())");
-    if (!$stmt) {
-        $error_msg = "SQL Error: " . $conn->error;
+    // Check if email already exists
+    $email_query = $conn->prepare("SELECT Email FROM Users WHERE Email = ?");
+    $email_query->bind_param("s", $email);
+    $email_query->execute();
+    $email_query->store_result();
+    if ($email_query->num_rows > 0) {
+        $error_msg = "An account with this email already exists.";
     } else {
-        $stmt->bind_param("sssss", $name, $email, $phone, $hashed_password, $role);
-        if ($stmt->execute()) {
-            header("Location: registration_success.php");
-            exit();
+        $stmt = $conn->prepare("INSERT INTO Users (Name, Email, Phone, Password, Role, RegistrationDate) VALUES (?, ?, ?, ?, ?, NOW())");
+        if (!$stmt) {
+            $error_msg = "SQL Error: " . $conn->error;
         } else {
-            $error_msg = "Registration Error: " . $stmt->error;
+            $stmt->bind_param("sssss", $name, $email, $phone, $hashed_password, $role);
+            if ($stmt->execute()) {
+                header("Location: registration_success.php");
+                exit();
+            } else {
+                $error_msg = "Registration Error: " . $stmt->error;
+            }
+            $stmt->close();
         }
-        $stmt->close();
     }
+    $email_query->close();
     $conn->close();
 }
 ?>
@@ -44,9 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
             <img src="img/sampoerna_connect.svg" alt="Admin Icon" style="height: 140px; width: 140px;">
         </div>
         <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Seller Registration</h2>
-        <p class="text-center text-gray-500 text-xs mt-6 mb-8"> <!-- Increased the bottom margin for spacing -->
+        <p class="text-center text-gray-500 text-xs mt-6 mb-8">
             Please fill this form to create a seller account.
         </p>
+        <?php if (!empty($error_msg)): ?>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <?php echo htmlspecialchars($error_msg); ?>
+            </div>
+        <?php endif; ?>
         <form action="register_seller.php" method="post">
             <div class="mb-4">
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="name" placeholder="Full Name" required>

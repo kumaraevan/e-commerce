@@ -1,4 +1,4 @@
-# sampoerna connect
+# Sampoerna Connect
 
 This document contains reports, requirements, and expectations of how the website will run. Discrepancies and shortcomings are expected due to tight deadlines and other situations that may hinder the progress of website development.	
 Sampoerna Connect is a website that provides buying and selling services (eCommerce) for users. This project was created as part of the final project of the Web Programming course which is a project to implement a web-based database application that serves three users (Buyer, seller, and admin). The use of a good and correct database is also one of the main points in working on this project, where every transaction made by users will be recorded and stored in the tables that are already available in the database. The features available in this version include functions for registering (buyer or seller), adding products (seller), the dashboard for sellers, features for buying and putting products in the cart (user), and a dashboard to monitor every data entered on the website (admin).

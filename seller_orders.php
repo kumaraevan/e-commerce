@@ -99,19 +99,14 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <title>View & Process Orders</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-gray-900 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="seller_dashboard.php" class="hover:bg-gray-700 px-3 py-2 rounded">Dashboard</a>
-            <a href="seller_add_new_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Add New Products</a>
-            <a href="seller_manage_products.php" class="hover:bg-gray-700 px-3 py-2 rounded">Manage Products</a>
-            <a href="seller_orders.php" class="hover:bg-gray-700 px-3 py-2 rounded">View Orders</a>
-            <div class="flex space-x-4">
-                <a href="logout.php" class="hover:bg-gray-700 px-3 py-2 rounded">Logout</a>
-            </div>
-        </div>
-    </nav>
+</head>
+<body class="bg-gray-100 flex">
+
+    <?php include 'sidebar_seller.php'; ?> <!-- Include the sidebar -->
+    <div class="pl-64"> <!-- Add padding to accommodate the sidebar -->
+    <div class="container mx-auto mt-10 pl-28">
     <?php if (!empty($_SESSION['message'])): ?>
         <div class="mt-5">
             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
@@ -175,6 +170,7 @@ mysqli_close($conn);
         <?php else: ?>
             <div class="px-5 py-5 bg-white text-sm text-gray-900">No recent orders found.</div>
         <?php endif; ?>        
+    </div>
     </div>
 </body>
 </html>

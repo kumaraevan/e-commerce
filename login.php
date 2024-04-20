@@ -59,6 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
 <body class="bg-gray-100">
 <div class="container mx-auto w-full max-w-xs mt-20">
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="flex justify-center mb-2">
+            <img src="img/sampoerna_connect.svg" alt="Admin Icon" style="height: 140px; width: 140px;">
+        </div>
         <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Login</h2>
         <p class="text-center text-gray-500 text-xs mt-4">
             Please enter your credentials

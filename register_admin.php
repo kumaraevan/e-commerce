@@ -99,38 +99,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body class="bg-gray-100">
-    <div class="max-w-lg mx-auto py-10 px-5 mt-20 bg-white shadow-lg rounded">
+<div class="container mx-auto w-full max-w-xs mt-20">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="flex justify-center mb-2">
+            <img src="img/sampoerna_connect.svg" alt="Admin Icon" style="height: 140px; width: 140px;">
+        </div>
+        <h2 class="text-2xl font-semibold text-center text-gray-700 mb-4">Register New Admin</h2>
+        <p class="text-center text-gray-500 text-xs mb-8">
+            Please fill this form to create an admin account.
+        </p>
         <?php if ($success_msg): ?>
-            <div class="text-center p-3 mb-2 bg-green-100 text-green-700 rounded">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
                 <?php echo $success_msg; ?>
             </div>
         <?php endif; ?>
-        <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Register New Admin</h2>
-        <p class="text-gray-600 text-sm text-center mb-6">Please fill this form to create an admin account.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
-                <input type="text" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<?php echo $name; ?>">
+                <input type="text" name="name" placeholder="Full Name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<?php echo $name; ?>">
                 <p class="text-red-500 text-xs italic"><?php echo $nameErr; ?></p>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-                <input type="email" name="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<?php echo $email; ?>">
+                <input type="email" name="email" placeholder="Email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<?php echo $email; ?>">
                 <p class="text-red-500 text-xs italic"><?php echo $emailErr; ?></p>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Phone:</label>
-                <input type="text" name="phone" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<?php echo $phone; ?>">
+                <input type="text" name="phone" placeholder="Phone Number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<?php echo $phone; ?>">
                 <p class="text-red-500 text-xs italic"><?php echo $phoneErr; ?></p>
             </div>
             <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-                <input type="password" name="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="password" name="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                 <p class="text-red-500 text-xs italic"><?php echo $passwordErr; ?></p>
             </div>
             <div class="flex items-center justify-between">
@@ -139,6 +141,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
                 </button>
             </div>
         </form>
+        <p class="text-center text-gray-500 text-xs mt-2">
+            Already have an account? <a href="login.php" class="text-blue-500 hover:text-blue-800">Login here!</a>
+        </p>
     </div>
+</div>
 </body>
 </html>

@@ -1,8 +1,8 @@
 <!-- sidebar_seller.php -->
 <div class="bg-gray-900 text-white h-full fixed">
-    <div class="py-5 px-6">
+    <div class="py-5 px-4">
         <a href="seller_dashboard.php" class="text-white no-underline hover:text-gray-300">
-            <h2 class="text-xl font-semibold">Seller Dashboard</h2>
+            <h2 class="text-xl font-semibold text-left">Seller Dashboard</h2> <!-- Ensure text alignment to the left -->
         </a>
     </div>
 
